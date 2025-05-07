@@ -11,14 +11,18 @@ import {
   Stack,
   Paper,
   Typography,
-  Button
+  Button,
+  Avatar,
+  Divider
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { orange } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
+import {useNavigate } from 'react-router-dom';
 
 export default function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -32,7 +36,7 @@ export default function Login() {
 
   return (
     <Container
-      maxWidth="xlg"
+      maxWidth="lg"
       sx={{
         minHeight: '100vh',
         display: 'flex',
@@ -67,9 +71,55 @@ export default function Login() {
                   label="Contraseña"
                 />
               </FormControl>
+              <Typography
+                align="right"
+                sx={{
+                  fontSize: "13px",
+                  color: "#5d8c4c",
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  '&:hover': {
+                    textDecoration: 'underline',
+                  }
+                }}
+              >
+                ¿Olvidaste tu contraseña?
+              </Typography>
               <ColorButton variant="contained" fullWidth sx={{color:'#fff'}}>
                 Iniciar sesión
               </ColorButton>
+            </Stack>
+            <Stack direction="row" alignItems="center" spacing={2} sx={{mt:3}}>
+              <Divider sx={{ flexGrow: 1}}/>
+              <Typography>o continúa con</Typography>
+              <Divider sx={{ flexGrow: 1}}/>
+            </Stack>
+            <Stack direction="row" spacing={2} justifyContent="center">
+              <IconButton>
+                <Avatar alt="Google" src="/google-icon.png" sx={{ width: 40, height: 40 }} />
+              </IconButton>
+              <IconButton>
+                <Avatar alt="Apple" src="/apple-icon.png" sx={{ width: 40, height: 40 }} />
+              </IconButton>
+              <IconButton>
+                <Avatar alt="Facebook" src="/facebook-icon.png" sx={{ width: 40, height: 40 }} />
+              </IconButton>
+            </Stack>
+            <Stack direction="row" spacing={1} textAlign="center">
+              <Typography>¿No tienes cuenta?</Typography>
+              <Typography
+                onClick={() => navigate('/tipo')}
+                sx={{
+                  color: "#1e88e5",
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  '&:hover': {
+                    textDecoration: 'underline',
+                  }
+                }}
+              >
+                Regístrate
+              </Typography>
             </Stack>
           </Paper>
         </Grid>
@@ -85,10 +135,49 @@ export default function Login() {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#eaf2e5',
-              border: '#a4aaa1'
+              backgroundImage: 'url(/huellitas.png)',
+              backgroundRepeat: 'no-repeat',
+              backgroundImage: `url('/huellitas.png'), url('/huellitas.png')`,
+              backgroundRepeat: 'no-repeat, no-repeat',
+              backgroundPosition: 'top left, bottom right',
+              backgroundSize: '40px, 60px',
+              border: '#a4aaa1',
+              position: 'relative'
             }}
           >
-            <Typography variant="body1">Powitos</Typography>
+            <Avatar
+              src="/gatito1.jpg"
+              alt="gatito1"
+              sx={{
+                width: 140,
+                height: 140,
+                position: 'absolute',
+                top: 16,
+                left: 16
+              }}
+            />
+            <Avatar
+              src="/huron1.jpg"
+              alt="huron1"
+              sx={{
+                width: 135,
+                height: 135,
+                position: 'absolute',
+                top: 16,
+                right: 16
+              }}
+            />
+
+            <Stack direction="column" alignItems="center" spacing={2}>
+              <Avatar
+                alt="powito1"
+                src="/powito1.jpeg"
+                sx={{ width: 256, height: 256 }}
+              />
+              <Typography align="center">
+                Tu mascota merece lo mejor, en <strong>Chat Pet</strong> te ayudamos a encontrarlo
+              </Typography>
+            </Stack>
           </Paper>
         </Grid>
       </Grid>
