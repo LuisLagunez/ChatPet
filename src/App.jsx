@@ -3,6 +3,9 @@ import './App.css'
 import Login from './components/Login'
 import Home from './components/Home'
 import TipoRegistro from './components/TipoRegistro'
+import PrestadorPersonal from './components/InformacionPrestador'
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 function App() {
 
@@ -18,6 +21,9 @@ function App() {
         <Route
         path="/tipo"
         element={<TipoRegistro/>}/>
+        <Route
+        path="/info-prestador"
+        element={<PrestadorPersonal/>}/>
       </Routes>
     </>
   )

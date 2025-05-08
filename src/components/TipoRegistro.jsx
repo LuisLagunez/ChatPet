@@ -55,7 +55,7 @@ export default function TipoRegistro() {
           <Grid container spacing={2} sx={{paddingLeft:5, paddingRight:5}}>
             {/* Recuadro de prestador de servicio */}
             <Card item xs={12} md={6} sx={{border:2, borderColor:'#cfddca', borderRadius:5}}>
-              <CardActionArea>
+              <CardActionArea onClick={() => navigate('/info-prestador')}>
                 <Paper sx={{ padding: 2, height: '100%', maxWidth:350, margin: 'auto', borderColor:'#cfddca', borderRadius:5 }}>
                   <Stack direction="column" alignItems="center" spacing={2}>
                       <Avatar
@@ -97,7 +97,7 @@ export default function TipoRegistro() {
 
             {/* Recuadro de dueño de mascota */}
             <Card item xs={12} md={6} marginRight={5}sx={{border:2, borderColor:'#f9cfbc', borderRadius:5}}>
-              <CardActionArea>
+              <CardActionArea onClick={() => navigate('/info-personal-prestador')}>
                 <Paper sx={{ padding: 2, height: '100%', maxWidth:350, margin: 'auto'  }}>
                   <Stack direction="column" alignItems="center" spacing={2}>
                     <Avatar
