@@ -97,7 +97,7 @@ export default function TipoRegistro() {
 
             {/* Recuadro de dueño de mascota */}
             <Card item xs={12} md={6} marginRight={5}sx={{border:2, borderColor:'#f9cfbc', borderRadius:5}}>
-              <CardActionArea onClick={() => navigate('/info-personal-prestador')}>
+              <CardActionArea onClick={() => navigate('/info-dueño')}>
                 <Paper sx={{ padding: 2, height: '100%', maxWidth:350, margin: 'auto'  }}>
                   <Stack direction="column" alignItems="center" spacing={2}>
                     <Avatar

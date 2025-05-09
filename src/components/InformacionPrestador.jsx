@@ -24,15 +24,14 @@ import { PhotoCamera } from '@mui/icons-material';
 import { orange } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 
-const steps = ['Información personal', 'Información del servicio', 'Detalles del servicio', 'Confirmar'];
+const steps = ['INFORMACIÓN PERSONAL', 'INFORMACIÓN DEL SERVICIO', 'DETALLES DEL SERVICIO', 'CONFIRMAR'];
 
-export default function RegistroDistribuido() {
+export default function PrestadorPersonal() {
   const [activeStep, setActiveStep] = React.useState(0);
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText(orange[500]),
+  const ColorButton = styled(Button)(({}) => ({
     backgroundColor: orange[500],
     '&:hover': {
-      backgroundColor: orange[700],
+      backgroundColor: '#5d8c4c',
     }
   }))
   const [selected, setSelected] = React.useState([]);
@@ -75,7 +74,7 @@ export default function RegistroDistribuido() {
               variant='outlined' 
               startIcon={<PhotoCamera/>} 
               component="label"
-              sx={{width:'50%', alignSelf:'center', height:'56px'}}>
+              sx={{width:'50%', alignSelf:'center', height:'56px', marginTop:1}}>
                 Sube una foto
                 <input hidden accept="imagen/*" type="file" onChange={() => {}}/>
               </Button>
@@ -340,10 +339,10 @@ export default function RegistroDistribuido() {
           sx={{
             '& .MuiStepIcon-root': { color: 'lightgray' }, 
             '& .MuiStepIcon-root.Mui-active': { color: orange[500] }, 
-            '& .MuiStepIcon-root.Mui-completed': { color: orange[500] }, 
+            '& .MuiStepIcon-root.Mui-completed': { color: orange[500] },
           }}
         >
-          {steps.map((label, index) => (
+          {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
             </Step>
