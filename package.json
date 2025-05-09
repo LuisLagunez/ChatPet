@@ -13,6 +13,8 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
+    "axios": "^1.9.0",
+    "body-parser": "^2.2.0",
     "bootstrap-icons": "^1.12.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
