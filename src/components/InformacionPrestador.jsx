@@ -333,29 +333,72 @@ export default function PrestadorPersonal() {
       }}
     >
       {/* Panel izquierdo con stepper */}
-      <Grid item xs={12} md={4} sx={{ backgroundColor: '#5d8c4c', p: 3, height: '529px'}}>
-        <Typography align='center' variant='h4'>CHAT PET</Typography>
-        <Typography variant='h6' sx={{marginBottom:2}}>PRESTADOR DE SERVICIOS</Typography>
-        <Stepper 
-          activeStep={activeStep} 
-          orientation="vertical"
-          sx={{
-            '& .MuiStepIcon-root': { color: 'lightgray' }, 
-            '& .MuiStepIcon-root.Mui-active': { color: orange[500] }, 
-            '& .MuiStepIcon-root.Mui-completed': { color: orange[500] },
+      <Grid 
+        item 
+        xs={12} 
+        md={4} 
+        sx={{ 
+          position: 'relative',
+          height: '529px',
+          width: '320px',
+          backgroundImage: 'url(/info-gatito.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center bottom',
+          color: 'fff',
+          p: '3',
+          borderTopLeftRadius: '30px',
+          borderBottomLeftRadius: '30px',
+          overflow: 'hidden'
+        }}
+      >
+        <Box sx={{ 
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            bgcolor: 'rgba(93, 140, 76, 0.90)',
+            zIndex: 1,
           }}
         >
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+          {/* contenido encima de... */}
+          <Box sx={{ position:'relative', zIndex:2, p:3 }}>
+            <Typography align='center' variant='h4'>CHAT PET</Typography>
+            <Typography variant='h6' sx={{marginBottom:2}}>PRESTADOR DE SERVICIOS</Typography>
+            <Stepper 
+              activeStep={activeStep} 
+              orientation="vertical"
+              sx={{
+                '& .MuiStepIcon-root': { color: 'lightgray' }, 
+                '& .MuiStepIcon-root.Mui-active': { color: orange[500] }, 
+                '& .MuiStepIcon-root.Mui-completed': { color: orange[500] },
+              }}
+            >
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Box>
+        </Box>
 
       </Grid>
 
       {/* Panel derecho con contenido dinámico */}
-      <Grid item xs={12} md={8} sx={{ marginLeft: 0, marginTop:0, border:2, borderColor:'#5d8c4c'}}>
+      <Grid 
+        item 
+        xs={12} 
+        md={8} 
+        sx={{ 
+            marginLeft: 0, 
+            marginTop:0, 
+            border:2, 
+            borderColor:'#5d8c4c',
+            borderTopRightRadius: '30px',
+            borderBottomRightRadius: '30px',
+            overflow: 'hidden'
+          }}>
         <Grid sx={{p:2, backgroundColor:'#eaf2e5', height: '465px', width:'375px'}}>
           {renderRightPanelContent(activeStep)}
         </Grid>

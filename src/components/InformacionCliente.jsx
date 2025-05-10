@@ -317,25 +317,55 @@ export default function ClientePersonal() {
       }}
     >
       {/* Panel izquierdo con stepper */}
-      <Grid item xs={12} md={4} sx={{ backgroundColor: '#eb5d1e', p: 3, height: '529px'}}>
-        <Typography align='center' variant='h4'>CHAT PET</Typography>
-        <Typography variant='h6' align='center' sx={{marginBottom:2, color:'#ffc0a4', fontSize:'14px'}}>DUEÑO DE MASCOTA</Typography>
-        <Stepper 
-          activeStep={activeStep} 
-          orientation="vertical"
-          sx={{
-            '& .MuiStepIcon-root': { color: 'lightgray' }, 
-            '& .MuiStepIcon-root.Mui-active': { color: '#5d8c4c' }, 
-            '& .MuiStepIcon-root.Mui-completed': { color: '#5d8c4c' }, 
+      <Grid 
+        item 
+        xs={12} 
+        md={4} 
+        sx={{
+            position: 'relative',
+            height: '529px',
+            width: '320px',
+            backgroundImage: 'url(/info-perrito.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center bottom',
+            color: '#fff',
+            p: 3,
+            borderTopLeftRadius: '30px',
+            borderBottomLeftRadius: '30px',
+            overflow: 'hidden'
+        }}
+      >
+        <Box sx={{ 
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            bgcolor: 'rgba(255, 87, 34, 0.82)',
+            zIndex: 1,
           }}
         >
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-
+          {/* contendio encima de... */}
+          <Box sx={{ position:'relative', zIndex:2, p:3 }}>
+            <Typography align='center' variant='h4'>CHAT PET</Typography>
+            <Typography variant='h6' align='center' sx={{marginBottom:2, color:'#ffc0a4', fontSize:'14px'}}>DUEÑO DE MASCOTA</Typography>
+            <Stepper 
+              activeStep={activeStep} 
+              orientation="vertical"
+              sx={{
+                '& .MuiStepIcon-root': { color: 'lightgray' }, 
+                '& .MuiStepIcon-root.Mui-active': { color: '#5d8c4c' }, 
+                '& .MuiStepIcon-root.Mui-completed': { color: '#5d8c4c' }, 
+              }}
+            >
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Box>
+        </Box>
       </Grid>
 
       {/* Panel derecho con contenido dinámico */}
