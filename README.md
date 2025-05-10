@@ -34,7 +34,9 @@ El sistema está distribuido en varios componentes que interactúan entre sí a 
 <div align="center">
 <img src="Docs/IU.png">
 </div>
-- [Figma del proyecto - Ver diseño en Figma](https://www.figma.com/design/PELtlEl7AhFgfCv5fKukyD/Chat-Pet?node-id=0-1&t=XqNm3S2cBTtcCt1c-1)
+
+🔗 [Ver diseño en Figma](https://www.figma.com/design/PELtlEl7AhFgfCv5fKukyD/Chat-Pet?node-id=0-1&t=XqNm3S2cBTtcCt1c-1)
+
 
 
 # 🚀 Cómo ejecutar el proyecto
