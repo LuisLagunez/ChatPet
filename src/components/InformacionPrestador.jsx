@@ -364,7 +364,7 @@ export default function PrestadorPersonal() {
           {/* contenido encima de... */}
           <Box sx={{ position:'relative', zIndex:2, p:3 }}>
             <Typography align='center' variant='h4'>CHAT PET</Typography>
-            <Typography variant='h6' sx={{marginBottom:2}}>PRESTADOR DE SERVICIOS</Typography>
+            <Typography variant='h6' align='center' sx={{ marginBottom:2, color:'#a6d993', fontSize:'14px' }}>PRESTADOR DE SERVICIOS</Typography>
             <Stepper 
               activeStep={activeStep} 
               orientation="vertical"
