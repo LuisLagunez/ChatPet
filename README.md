@@ -30,6 +30,13 @@ El sistema está distribuido en varios componentes que interactúan entre sí a 
 3. Diagrama de Casos de Uso
 
 
+# Interfaces de usuario
+<div align="center">
+<img src="Docs/IU.png">
+</div>
+- [Figma del proyecto - Ver diseño en Figma](https://www.figma.com/design/PELtlEl7AhFgfCv5fKukyD/Chat-Pet?node-id=0-1&t=XqNm3S2cBTtcCt1c-1)
+
+
 # 🚀 Cómo ejecutar el proyecto
 1. Clonar el repositorio
    ```bash
@@ -45,3 +52,10 @@ El sistema está distribuido en varios componentes que interactúan entre sí a 
       cd ../frontend
       npm install
       npm run dev
+
+# 🤝 Colaboradores
+<div>
+<a href="https://github.com/ArmandoCanche"><img src="https://avatars.githubusercontent.com/u/91635600?s=96&v=4" title="armando-canche" width="50" height="50" ></a>
+<a href="https://github.com/LeticiaTejeroGamboa2401"><img src="https://avatars.githubusercontent.com/u/92128636?v=4" title="lae-tejero" width="50" height="50" ></a>
+<a href="https://github.com/LuisLagunez"><img src="https://avatars.githubusercontent.com/u/72402156?v=4" title="luis-lagunez" width="50" height="50" ></a>
+</div>
