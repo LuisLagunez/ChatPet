@@ -29,13 +29,13 @@ El sistema está distribuido en varios componentes que interactúan entre sí a 
 2. Diagrama de Secuencia del Proceso
 3. Diagrama de Casos de Uso
 <div align="center">
-<img src="Docs/ActiveChat.png" alt="Diagrama de Caso de Uso de Chat Pet">
+<img src="Docs/ActiveChat.png" alt="Diagrama de Caso de Uso de Chat Pet" width="450">
 </div>
 
 
 # Interfaces de usuario
 <div align="center">
-<img src="Docs/IU.png" alt="Interfaz de Usuario de Chat Pet">
+<img src="Docs/IU.png" alt="Interfaz de Usuario de Chat Pet" width="600">
 </div>
 
 🔗 [Ver diseño en Figma](https://www.figma.com/design/PELtlEl7AhFgfCv5fKukyD/Chat-Pet?node-id=0-1&t=XqNm3S2cBTtcCt1c-1)
