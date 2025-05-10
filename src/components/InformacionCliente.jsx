@@ -369,7 +369,8 @@ export default function ClientePersonal() {
       </Grid>
 
       {/* Panel derecho con contenido dinámico */}
-      <Grid item xs={12} md={8} sx={{ marginLeft: 0, marginTop:0, border:2, borderColor:'#eb5d1e'}}>
+      <Grid item xs={12} md={8} sx={{ marginLeft: 0, marginTop:0, border:2, borderColor:'#eb5d1e', borderTopRightRadius: '30px',
+            borderBottomRightRadius: '30px', overflow: 'hidden'}}>
         <Grid sx={{p:2, backgroundColor:'#e6d7d0', height: '465px', width:'375px'}}>
           {renderRightPanelContent(activeStep)}
         </Grid>
