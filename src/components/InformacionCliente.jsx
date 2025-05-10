@@ -15,9 +15,6 @@ import {
   FormControl,
   Stack,
   Radio,
-  TextareaAutosize,
-  ToggleButtonGroup,
-  ToggleButton,
   Checkbox,
   InputAdornment,
 } from '@mui/material';
@@ -35,13 +32,17 @@ export default function ClientePersonal() {
       backgroundColor: orange[700],
     }
   }))
-  const [selected, setSelected] = React.useState([]);
   const [tipoMascota, setTipoMascota] = React.useState('');
   const handleTipoMascotaChange = (event) => {
     setTipoMascota(event.target.value);
   }
-  const handleDiasChange = (event, newSelection) => {
-    setSelected(newSelection);
+  const [tipoServicioPreferente, setTipoServicioPreferente] = React.useState('');
+  const handleTipoServicioPreferenteChange = (event) => {
+    setTipoServicioPreferente(event.target.value);
+  }
+  const [frecuenciaUso, setFrecuenciaUso] = React.useState('');
+  const handleFrecuenciaUsoChange = (event) => {
+    setFrecuenciaUso(event.target.value);
   }
   const [acceptedTerms, setAcceptedTerms] = React.useState(false);
   const [acceptedPrivacy, setAcceptedPrivacy] = React.useState(false);
@@ -53,28 +54,31 @@ export default function ClientePersonal() {
       case 0:
         return (
           <Box>
-            <Typography variant='h6' align='center' sx={{color:'black', marginBottom:2, marginTop:2}}>INFORMACIÓN PERSONAL</Typography>
+            <Typography variant='h6' align='center' sx={{color:'black', marginTop:2}}>INFORMACIÓN PERSONAL</Typography>
             <Box sx={{display:'flex', gap:2}}>
-              <TextField fullWidth label="Nombre" margin="normal" sx={{ width:'50%' }} />
-              <TextField fullWidth label="Apellidos" margin="normal" sx={{ width:'50%' }} />
+                <TextField fullWidth label="Nombre" margin="normal" sx={{ width:'50%' }} />
+                <TextField fullWidth label="Apellidos" margin="normal" sx={{ width:'50%' }} />
             </Box>
             <Box>
-              <TextField fullWidth label="Correo electrónico" margin="normal"/>
+                <TextField fullWidth label="Correo electrónico" margin="normal"/>
+            </Box>
+            <Box>
+                <TextField fullWidth label="Dirección" margin="normal"/>
             </Box>
             <Box sx={{display:'flex', gap:2}}>
-              <TextField fullWidth label="Número telefónico" margin="normal" sx={{ width:'50%' }} />
-              <TextField fullWidth label="Código postal" margin="normal" sx={{ width:'50%' }} />
+                <TextField fullWidth label="Código postal" margin="normal" sx={{ width:'50%' }} />                 
+                <TextField fullWidth label="Número telefónico" margin="normal" sx={{ width:'50%' }} />
             </Box>
             <Box sx={{display:'flex', gap:2}}>
-              <TextField fullWidth label="Identificación" margin="normal" sx={{ width:'50%' }} />
-              <Button 
-              variant='outlined' 
-              startIcon={<PhotoCamera/>} 
-              component="label"
-              sx={{width:'50%', alignSelf:'center', height:'56px', marginTop:1}}>
-                Sube una foto
-                <input hidden accept="imagen/*" type="file" onChange={() => {}}/>
-              </Button>
+                <TextField fullWidth label="Identificación" margin="normal" sx={{ width:'50%' }} />
+                <Button 
+                variant='outlined' 
+                startIcon={<PhotoCamera/>} 
+                component="label"
+                sx={{width:'50%', alignSelf:'center', height:'56px', marginTop:1}}>
+                    Sube una foto
+                    <input hidden accept="imagen/*" type="file" onChange={() => {}}/>
+                </Button>
             </Box>
           </Box>
         );
@@ -175,6 +179,77 @@ export default function ClientePersonal() {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <FormLabel>Tipo de servicios que busca:</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            aria-labelledby='demo-radio-buttons-group-label'
+                            value={tipoServicioPreferente}
+                            onChange={handleTipoServicioPreferenteChange}
+                            name='tipo-servicio-preferente'
+                        >
+                            <Paper sx={{width:'150px', p:0, marginRight:2, marginBottom:1}}>
+                                <Stack align="center" spacing={0.5}>
+                                    <FormControlLabel value="paseos" control={<Radio/>}/>
+                                    <Typography sx={{fontSize:'12px'}}>PASEOS</Typography>
+                                </Stack>
+                            </Paper>
+                            <Paper sx={{width:'150px', p:0, marginRight:2, marginBottom:1}}>
+                                <Stack align="center" spacing={0.5}>
+                                    <FormControlLabel value="cuidado" control={<Radio/>}/>
+                                    <Typography sx={{fontSize:'12px'}}>CUIDADO / HOSPEDAJE</Typography>
+                                </Stack>
+                            </Paper>
+                            <Paper sx={{width:'150px', p:0, marginRight:2}}>
+                                <Stack align="center" spacing={0.5}>
+                                    <FormControlLabel value="entrenamiento" control={<Radio/>}/>
+                                    <Typography sx={{fontSize:'12px'}}>ENTRENAMIENTO</Typography>
+                                </Stack>
+                            </Paper>
+                            <Paper sx={{width:'150px', p:0, marginRight:2}}>
+                                <Stack align="center" spacing={0.5}>
+                                    <FormControlLabel value="transporte" control={<Radio/>}/>
+                                    <Typography sx={{fontSize:'12px'}}>TRANSPORTE</Typography>
+                                </Stack>
+                            </Paper>
+                        </RadioGroup>
+                    </FormControl>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <FormLabel>Frecuencia de uso:</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            aria-labelledby='demo-radio-buttons-group-label'
+                            value={frecuenciaUso}
+                            onChange={handleFrecuenciaUsoChange}
+                            name='tipo-servicio-preferente'
+                        >
+                            <Paper sx={{width:'150px', p:0, marginRight:2, marginBottom:1}}>
+                                <Stack align="center" spacing={0.5}>
+                                    <FormControlLabel value="ocasional" control={<Radio/>}/>
+                                    <Typography sx={{fontSize:'12px'}}>OCASIONAL</Typography>
+                                </Stack>
+                            </Paper>
+                            <Paper sx={{width:'150px', p:0, marginRight:2, marginBottom:1}}>
+                                <Stack align="center" spacing={0.5}>
+                                    <FormControlLabel value="semanal" control={<Radio/>}/>
+                                    <Typography sx={{fontSize:'12px'}}>SEMANAL</Typography>
+                                </Stack>
+                            </Paper>
+                            <Paper sx={{width:'150px', p:0, marginRight:2}}>
+                                <Stack align="center" spacing={0.5}>
+                                    <FormControlLabel value="quincenal" control={<Radio/>}/>
+                                    <Typography sx={{fontSize:'12px'}}>QUINCENAL</Typography>
+                                </Stack>
+                            </Paper>
+                            <Paper sx={{width:'150px', p:0, marginRight:2}}>
+                                <Stack align="center" spacing={0.5}>
+                                    <FormControlLabel value="mensual" control={<Radio/>}/>
+                                    <Typography sx={{fontSize:'12px'}}>MENSUAL</Typography>
+                                </Stack>
+                            </Paper>
+                        </RadioGroup>
+                    </FormControl>
                 </Box>
             </Box>
           </Box>

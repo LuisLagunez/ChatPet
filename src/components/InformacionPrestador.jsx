@@ -56,7 +56,7 @@ export default function PrestadorPersonal() {
       case 0:
         return (
           <Box>
-            <Typography variant='h6' align='center' sx={{color:'black', marginBottom:2, marginTop:2}}>INFORMACIÓN PERSONAL</Typography>
+            <Typography variant='h6' align='center' sx={{color:'black', marginTop:2}}>INFORMACIÓN PERSONAL</Typography>
             <Box sx={{display:'flex', gap:2}}>
               <TextField fullWidth label="Nombre" margin="normal" sx={{ width:'50%' }} />
               <TextField fullWidth label="Apellidos" margin="normal" sx={{ width:'50%' }} />
@@ -64,9 +64,12 @@ export default function PrestadorPersonal() {
             <Box>
               <TextField fullWidth label="Correo electrónico" margin="normal"/>
             </Box>
+            <Box>
+              <TextField fullWidth label="Dirección" margin="normal"/>
+            </Box>
             <Box sx={{display:'flex', gap:2}}>
-              <TextField fullWidth label="Número telefónico" margin="normal" sx={{ width:'50%' }} />
               <TextField fullWidth label="Código postal" margin="normal" sx={{ width:'50%' }} />
+              <TextField fullWidth label="Número telefónico" margin="normal" sx={{ width:'50%' }} />
             </Box>
             <Box sx={{display:'flex', gap:2}}>
               <TextField fullWidth label="Identificación" margin="normal" sx={{ width:'50%' }} />
