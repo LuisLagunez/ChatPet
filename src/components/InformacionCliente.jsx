@@ -17,6 +17,7 @@ import {
   Radio,
   Checkbox,
   InputAdornment,
+  Popover
 } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 import { orange } from '@mui/material/colors';
@@ -65,31 +66,40 @@ export default function ClientePersonal() {
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
   const handleFinalizar = async () => {
-  // Depuración
-  console.log("Enviando datos al backend...");
-  const datosCliente = {
-    nombre,
-    apellidos,
-    correo,
-    direccion,
-    codigoPostal,
-    telefono,
-    identificacion,
-    nombreMascota,
-    pesoMascota,
-    tipoMascota,
-    tipoServicioPreferente,
-    frecuenciaUso,
+    // Depuración
+    console.log("Enviando datos al backend...");
+    const datosCliente = {
+      nombre,
+      apellidos,
+      correo,
+      direccion,
+      codigoPostal,
+      telefono,
+      identificacion,
+      nombreMascota,
+      pesoMascota,
+      tipoMascota,
+      tipoServicioPreferente,
+      frecuenciaUso,
+    };
+
+    try {
+        const res = await axios.post('http://localhost:5000/api/cliente', datosCliente);
+        console.log('Cliente registrado:', res.data);
+        setActiveStep((prev) => prev + 1);
+    } catch (error) {
+        console.error('Error al registrar cliente:', error);
+    }
   };
 
-  try {
-    const res = await axios.post('http://localhost:5000/api/cliente', datosCliente);
-    console.log('Cliente registrado:', res.data);
-    setActiveStep((prev) => prev + 1);
-  } catch (error) {
-    console.error('Error al registrar cliente:', error);
-  }
-};
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handlePopOverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
 
   const renderRightPanelContent = (step) => {
     switch (step) {
@@ -122,17 +132,51 @@ export default function ClientePersonal() {
                 fullWidth
                 label="Identificación"
                 value={identificacion}
-                onChange={(e) => setIdentificacion(e.target.value)}
+                onChange={(e) => {
+                  setIdentificacion(e.target.value);
+                  handlePopoverClose();
+                }}
                 margin="normal"
                 sx={{ width:'50%' }}
+                aria-owns={open ? 'mouse-over-popover' : undefined}
+                aria-haspopup="true"
+                onMouseEnter={handlePopOverOpen}
+                onMouseLeave={handlePopoverClose}
+                onFocus={handlePopoverClose}
               />
+              <Popover
+                disablePortal={true}
+                id="mouse-over-popover"
+                sx={{ pointerEvents: 'none'}}
+                open={open}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                onClose={handlePopoverClose}
+                disableRestoreFocus
+                PaperProps={{
+                  sx: {
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    padding: 0,
+                  }
+                }}
+              >
+                <Typography sx={{ color: 'black' }}>Introduzca su clave de lector.</Typography>
+              </Popover>
               <Button 
                 variant='outlined' 
                 startIcon={<PhotoCamera/>} 
                 component="label"
                 sx={{width:'50%', alignSelf:'center', height:'56px', marginTop:1}}
               >
-                Sube una foto
+                Selfie
                 <input hidden accept="imagen/*" type="file" onChange={() => {}}/>
               </Button>
             </Box>

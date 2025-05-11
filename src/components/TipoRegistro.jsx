@@ -43,6 +43,9 @@ export default function TipoRegistro() {
         backgroundRepeat: 'no-repeat, no-repeat',
         backgroundPosition: 'top left, bottom right',
         backgroundSize: '80px, 70px',
+        borderRadius:'15px',
+        border: 3.5,
+        borderColor:'#5D8C4C'
       }}
       >
         <Stack spacing={2}>
