@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
+import userRoutes from"./src/routes/user.js";
 
 // Cargar las variables de entorno
 dotenv.config();
@@ -31,3 +32,6 @@ app.get('/status', (req, res) => {
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
 });
+
+// middleware
+app.use('/api', userRoutes);
