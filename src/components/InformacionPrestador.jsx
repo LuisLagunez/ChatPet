@@ -23,7 +23,7 @@ import {
 import { PhotoCamera } from '@mui/icons-material';
 import { orange } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
-
+import axios from 'axios';
 const steps = ['INFORMACIÓN PERSONAL', 'INFORMACIÓN DEL SERVICIO', 'DETALLES DEL SERVICIO', 'CONFIRMAR'];
 
 export default function PrestadorPersonal() {
@@ -48,41 +48,135 @@ export default function PrestadorPersonal() {
   }
   const [acceptedTerms, setAcceptedTerms] = React.useState(false);
   const [acceptedPrivacy, setAcceptedPrivacy] = React.useState(false);
+  // Datos personales
+  const [nombre, setNombre] = React.useState('');
+  const [apellidos, setApellidos] = React.useState('');
+  const [correo, setCorreo] = React.useState('');
+  const [direccion, setDireccion] = React.useState('');
+  const [codigoPostal, setCodigoPostal] = React.useState('');
+  const [telefono, setTelefono] = React.useState('');
+  const [identificacion, setIdentificacion] = React.useState('');
+
+  // Detalles del servicio
+  const [descripcion, setDescripcion] = React.useState('');
+  const [horario, setHorario] = React.useState('');
+
   const handleNext = () => setActiveStep((prev) => prev + 1);
   const handleBack = () => setActiveStep((prev) => prev - 1);
+
+  const handleFinalizar = async () => {
+  // Depuración
+  console.log("Enviando datos al backend...");
+  const datos = {
+    nombre,
+    apellidos,
+    correo,
+    direccion,
+    codigoPostal,
+    telefono,
+    identificacion,
+    tipoServicio,
+    categoria,
+    descripcion,
+    diasDisponibles: selected,
+    horario,
+  };
+
+  try {
+    const res = await axios.post('http://localhost:5000/api/registro', datos);
+    console.log('Usuario registrado:', res.data);
+    setActiveStep((prev) => prev + 1); // ir al paso final
+  } catch (error) {
+    console.error('Error al registrar:', error);
+  }
+};
+
 
   const renderRightPanelContent = (step) => {
     switch (step) {
       case 0:
         return (
           <Box>
-            <Typography variant='h6' align='center' sx={{color:'black', marginTop:2}}>INFORMACIÓN PERSONAL</Typography>
-            <Box sx={{display:'flex', gap:2}}>
-              <TextField fullWidth label="Nombre" margin="normal" sx={{ width:'50%' }} />
-              <TextField fullWidth label="Apellidos" margin="normal" sx={{ width:'50%' }} />
+              <Typography variant='h6' align='center' sx={{ color: 'black', marginTop: 2 }}>INFORMACIÓN PERSONAL</Typography>
+
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <TextField
+                  fullWidth
+                  label="Nombre"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                  margin="normal"
+                  sx={{ width: '50%' }}
+                />
+                <TextField
+                  fullWidth
+                  label="Apellidos"
+                  value={apellidos}
+                  onChange={(e) => setApellidos(e.target.value)}
+                  margin="normal"
+                  sx={{ width: '50%' }}
+                />
+              </Box>
+
+              <Box>
+                <TextField
+                  fullWidth
+                  label="Correo electrónico"
+                  value={correo}
+                  onChange={(e) => setCorreo(e.target.value)}
+                  margin="normal"
+                />
+              </Box>
+
+              <Box>
+                <TextField
+                  fullWidth
+                  label="Dirección"
+                  value={direccion}
+                  onChange={(e) => setDireccion(e.target.value)}
+                  margin="normal"
+                />
+              </Box>
+
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <TextField
+                  fullWidth
+                  label="Código postal"
+                  value={codigoPostal}
+                  onChange={(e) => setCodigoPostal(e.target.value)}
+                  margin="normal"
+                  sx={{ width: '50%' }}
+                />
+                <TextField
+                  fullWidth
+                  label="Número telefónico"
+                  value={telefono}
+                  onChange={(e) => setTelefono(e.target.value)}
+                  margin="normal"
+                  sx={{ width: '50%' }}
+                />
+              </Box>
+
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <TextField
+                  fullWidth
+                  label="Identificación"
+                  value={identificacion}
+                  onChange={(e) => setIdentificacion(e.target.value)}
+                  margin="normal"
+                  sx={{ width: '50%' }}
+                />
+                <Button
+                  variant='outlined'
+                  startIcon={<PhotoCamera />}
+                  component="label"
+                  sx={{ width: '50%', alignSelf: 'center', height: '56px', marginTop: 1 }}
+                >
+                  Sube una foto
+                  <input hidden accept="imagen/*" type="file" onChange={() => { }} />
+                </Button>
+              </Box>
             </Box>
-            <Box>
-              <TextField fullWidth label="Correo electrónico" margin="normal"/>
-            </Box>
-            <Box>
-              <TextField fullWidth label="Dirección" margin="normal"/>
-            </Box>
-            <Box sx={{display:'flex', gap:2}}>
-              <TextField fullWidth label="Código postal" margin="normal" sx={{ width:'50%' }} />
-              <TextField fullWidth label="Número telefónico" margin="normal" sx={{ width:'50%' }} />
-            </Box>
-            <Box sx={{display:'flex', gap:2}}>
-              <TextField fullWidth label="Identificación" margin="normal" sx={{ width:'50%' }} />
-              <Button 
-              variant='outlined' 
-              startIcon={<PhotoCamera/>} 
-              component="label"
-              sx={{width:'50%', alignSelf:'center', height:'56px', marginTop:1}}>
-                Sube una foto
-                <input hidden accept="imagen/*" type="file" onChange={() => {}}/>
-              </Button>
-            </Box>
-          </Box>
         );
       case 1:
         return(
@@ -209,7 +303,9 @@ export default function PrestadorPersonal() {
                   aria-label="minimum height"
                   minRows={6}
                   placeholder="Descripción..."
-                  style={{ width: 350, height:22, borderRadius: 3, paddingTop: 8, paddingLeft: 12 }}
+                  value={descripcion}
+                  onChange={(e) => setDescripcion(e.target.value)}
+                  style={{ width: 350, height: 22, borderRadius: 3, paddingTop: 8, paddingLeft: 12 }}
                 />
               </Box>
 
@@ -235,30 +331,31 @@ export default function PrestadorPersonal() {
                   <FormLabel>Horarios</FormLabel>
                   <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="uno"
-                    name='radio-buttons-group'
+                    name="radio-buttons-group"
+                    value={horario}
+                    onChange={(e) => setHorario(e.target.value)}
                   >
                     <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                       <FormControlLabel
-                        value="uno"
+                        value="0-2 HRS"
                         control={<Radio />}
                         label="0-2 HRS"
                         sx={{ width: '40%', color: 'black' }}
                       />
                       <FormControlLabel
-                        value="dos"
+                        value="2-4 HRS"
                         control={<Radio />}
                         label="2-4 HRS"
                         sx={{ width: '50%', color: 'black' }}
                       />
                       <FormControlLabel
-                        value="tres"
+                        value="4-8 HRS"
                         control={<Radio />}
                         label="4-8 HRS"
                         sx={{ width: '40%', color: 'black' }}
                       />
                       <FormControlLabel
-                        value="cuatro"
+                        value="+8 HRS"
                         control={<Radio />}
                         label="+8 HRS"
                         sx={{ width: '40%', color: 'black' }}
@@ -403,7 +500,7 @@ export default function PrestadorPersonal() {
           {renderRightPanelContent(activeStep)}
         </Grid>
         <Grid sx={{p:2, backgroundColor:'white', height: '60px', width:'350px'}}>
-          <Box >
+          <Box>
             <Button
               variant='outlined'
               disabled={activeStep === 0}
@@ -412,19 +509,28 @@ export default function PrestadorPersonal() {
             >
               Atrás
             </Button>
+
             <ColorButton 
               variant="contained" 
-              onClick={handleNext} 
-              sx={{borderRadius:2}}
-              disabled={activeStep === steps.length - 1 && (!acceptedTerms || !acceptedPrivacy)}
+              onClick={() => {
+                console.log('Paso actual:', activeStep); // para confirmar
+                if (activeStep >= steps.length - 1) {
+                  handleFinalizar();
+                } else {
+                  handleNext();
+                }
+              }}
+              sx={{ borderRadius: 2 }}
+              disabled={activeStep === 3 && (!acceptedTerms || !acceptedPrivacy)}
             >
-                {activeStep === steps.length ? 'Finalizar' : 'Siguiente'}
+              {activeStep >= steps.length - 1 ? 'Finalizar' : 'Siguiente'}
             </ColorButton>
-              {activeStep === steps.length && (
-                <Box mt={2}>
-                  <Typography>¡Completado!</Typography>
-                </Box>
-              )}
+
+            {activeStep === steps.length && (
+              <Box mt={2}>
+                <Typography>¡Completado!</Typography>
+              </Box>
+            )}
           </Box>
         </Grid>
       </Grid>

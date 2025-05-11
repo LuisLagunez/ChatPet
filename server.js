@@ -1,39 +1,30 @@
-import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
-import userRoutes from"./src/routes/user.js";
+import dotenv from 'dotenv';
+import cors from 'cors'; // <-- importa cors
+import userRoutes from './src/routes/user.js';
 
-// Cargar las variables de entorno
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Conectar a MongoDB Atlas sin las opciones de deprecated
-mongoose.connect(process.env.MONGO_URI)
-.then(() => {
-  console.log('Conectado a MongoDB Atlas');
-})
-.catch((err) => {
-  console.log('Error de conexión a MongoDB Atlas:', err);
-});
+// Middleware
+app.use(cors()); // <-- habilita CORS
+app.use(express.json());
+app.use('/api', userRoutes);
 
-// Ruta de prueba para verificar la conexión
+// Conexión a MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Conectado a MongoDB Atlas'))
+  .catch((err) => console.log('Error de conexión a MongoDB Atlas:', err));
+
+// Ruta de prueba
 app.get('/', (req, res) => {
   res.send('¡Conexión exitosa a MongoDB Atlas!');
 });
 
-// Ruta adicional para asegurarte de que todo funciona
-app.get('/status', (req, res) => {
-  res.json({ status: 'Conectado a MongoDB Atlas' });
-});
-
-// Middleware
-app.use(express.json());
-app.use('/api', userRoutes);
-
-// Escuchar en el puerto
+// Iniciar servidor
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
 });
-
