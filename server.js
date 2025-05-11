@@ -28,10 +28,12 @@ app.get('/status', (req, res) => {
   res.json({ status: 'Conectado a MongoDB Atlas' });
 });
 
+// Middleware
+app.use(express.json());
+app.use('/api', userRoutes);
+
 // Escuchar en el puerto
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
 });
 
-// middleware
-app.use('/api', userRoutes);
