@@ -24,9 +24,12 @@ import { PhotoCamera } from '@mui/icons-material';
 import { orange } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 const steps = ['INFORMACIÓN PERSONAL', 'INFORMACIÓN DEL SERVICIO', 'DETALLES DEL SERVICIO', 'CONFIRMAR'];
 
 export default function PrestadorPersonal() {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
   const ColorButton = styled(Button)(({}) => ({
     backgroundColor: orange[500],
@@ -118,13 +121,40 @@ export default function PrestadorPersonal() {
                 />
               </Box>
 
-              <Box>
+              <Box sx={{ display: 'flex', gap: 2 }}>
                 <TextField
                   fullWidth
+                  label="Identificación"
+                  value={identificacion}
+                  onChange={(e) => setIdentificacion(e.target.value)}
+                  margin="normal"
+                  sx={{ width: '50%' }}
+                />
+                <Button
+                  variant='outlined'
+                  startIcon={<PhotoCamera />}
+                  component="label"
+                  sx={{ width: '50%', alignSelf: 'center', height: '56px', marginTop: 1 }}
+                >
+                  Sube una foto
+                  <input hidden accept="imagen/*" type="file" onChange={() => { }} />
+                </Button>
+              </Box>
+
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <TextField
                   label="Correo electrónico"
                   value={correo}
                   onChange={(e) => setCorreo(e.target.value)}
                   margin="normal"
+                  sx={{ width: '50%' }}
+                />
+                <TextField
+                  label="Contraseña"
+                  value={correo}
+                  onChange={(e) => setCorreo(e.target.value)}
+                  margin="normal"
+                  sx={{ width: '50%' }}
                 />
               </Box>
 
@@ -155,26 +185,6 @@ export default function PrestadorPersonal() {
                   margin="normal"
                   sx={{ width: '50%' }}
                 />
-              </Box>
-
-              <Box sx={{ display: 'flex', gap: 2 }}>
-                <TextField
-                  fullWidth
-                  label="Identificación"
-                  value={identificacion}
-                  onChange={(e) => setIdentificacion(e.target.value)}
-                  margin="normal"
-                  sx={{ width: '50%' }}
-                />
-                <Button
-                  variant='outlined'
-                  startIcon={<PhotoCamera />}
-                  component="label"
-                  sx={{ width: '50%', alignSelf: 'center', height: '56px', marginTop: 1 }}
-                >
-                  Sube una foto
-                  <input hidden accept="imagen/*" type="file" onChange={() => { }} />
-                </Button>
               </Box>
             </Box>
         );
@@ -503,8 +513,13 @@ export default function PrestadorPersonal() {
           <Box>
             <Button
               variant='outlined'
-              disabled={activeStep === 0}
-              onClick={handleBack}
+              onClick={() => {
+                if (activeStep === 0){
+                  navigate('/tipo');
+                } else {
+                  handleBack();
+                }
+              }}
               sx={{ mr: 17, color:'gray', borderColor:'gray', borderRadius:2 }}
             >
               Atrás
