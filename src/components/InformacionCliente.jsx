@@ -21,6 +21,7 @@ import {
 import { PhotoCamera } from '@mui/icons-material';
 import { orange } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
+import axios from 'axios';
 
 const steps = ['INFORMACIÓN PERSONAL', 'INFORMACIÓN DE LA MASCOTA', 'PREFERENCIAS DEL SERVICIO', 'CONFIRMAR'];
 
@@ -32,6 +33,18 @@ export default function ClientePersonal() {
       backgroundColor: orange[700],
     }
   }))
+
+  const [nombre, setNombre] = React.useState('');
+  const [apellidos, setApellidos] = React.useState('');
+  const [correo, setCorreo] = React.useState('');
+  const [direccion, setDireccion] = React.useState('');
+  const [codigoPostal, setCodigoPostal] = React.useState('');
+  const [telefono, setTelefono] = React.useState('');
+  const [identificacion, setIdentificacion] = React.useState('');
+
+  const [nombreMascota, setNombreMascota] = React.useState('');
+  const [pesoMascota, setPesoMascota] = React.useState('');
+
   const [tipoMascota, setTipoMascota] = React.useState('');
   const handleTipoMascotaChange = (event) => {
     setTipoMascota(event.target.value);
@@ -49,36 +62,116 @@ export default function ClientePersonal() {
   const handleNext = () => setActiveStep((prev) => prev + 1);
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
+  const handleFinalizar = async () => {
+  // Depuración
+  console.log("Enviando datos al backend...");
+  const datosCliente = {
+    nombre,
+    apellidos,
+    correo,
+    direccion,
+    codigoPostal,
+    telefono,
+    identificacion,
+    nombreMascota,
+    pesoMascota,
+    tipoMascota,
+    tipoServicioPreferente,
+    frecuenciaUso,
+  };
+
+  try {
+    const res = await axios.post('http://localhost:5000/api/cliente', datosCliente);
+    console.log('Cliente registrado:', res.data);
+    setActiveStep((prev) => prev + 1);
+  } catch (error) {
+    console.error('Error al registrar cliente:', error);
+  }
+};
+
   const renderRightPanelContent = (step) => {
     switch (step) {
       case 0:
         return (
           <Box>
             <Typography variant='h6' align='center' sx={{color:'black', marginTop:2}}>INFORMACIÓN PERSONAL</Typography>
+
             <Box sx={{display:'flex', gap:2}}>
-                <TextField fullWidth label="Nombre" margin="normal" sx={{ width:'50%' }} />
-                <TextField fullWidth label="Apellidos" margin="normal" sx={{ width:'50%' }} />
+              <TextField
+                fullWidth
+                label="Nombre"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                margin="normal"
+                sx={{ width:'50%' }}
+              />
+              <TextField
+                fullWidth
+                label="Apellidos"
+                value={apellidos}
+                onChange={(e) => setApellidos(e.target.value)}
+                margin="normal"
+                sx={{ width:'50%' }}
+              />
             </Box>
+
             <Box>
-                <TextField fullWidth label="Correo electrónico" margin="normal"/>
+              <TextField
+                fullWidth
+                label="Correo electrónico"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                margin="normal"
+              />
             </Box>
+
             <Box>
-                <TextField fullWidth label="Dirección" margin="normal"/>
+              <TextField
+                fullWidth
+                label="Dirección"
+                value={direccion}
+                onChange={(e) => setDireccion(e.target.value)}
+                margin="normal"
+              />
             </Box>
+
             <Box sx={{display:'flex', gap:2}}>
-                <TextField fullWidth label="Código postal" margin="normal" sx={{ width:'50%' }} />                 
-                <TextField fullWidth label="Número telefónico" margin="normal" sx={{ width:'50%' }} />
+              <TextField
+                fullWidth
+                label="Código postal"
+                value={codigoPostal}
+                onChange={(e) => setCodigoPostal(e.target.value)}
+                margin="normal"
+                sx={{ width:'50%' }}
+              />
+              <TextField
+                fullWidth
+                label="Número telefónico"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+                margin="normal"
+                sx={{ width:'50%' }}
+              />
             </Box>
+
             <Box sx={{display:'flex', gap:2}}>
-                <TextField fullWidth label="Identificación" margin="normal" sx={{ width:'50%' }} />
-                <Button 
+              <TextField
+                fullWidth
+                label="Identificación"
+                value={identificacion}
+                onChange={(e) => setIdentificacion(e.target.value)}
+                margin="normal"
+                sx={{ width:'50%' }}
+              />
+              <Button 
                 variant='outlined' 
                 startIcon={<PhotoCamera/>} 
                 component="label"
-                sx={{width:'50%', alignSelf:'center', height:'56px', marginTop:1}}>
-                    Sube una foto
-                    <input hidden accept="imagen/*" type="file" onChange={() => {}}/>
-                </Button>
+                sx={{width:'50%', alignSelf:'center', height:'56px', marginTop:1}}
+              >
+                Sube una foto
+                <input hidden accept="imagen/*" type="file" onChange={() => {}}/>
+              </Button>
             </Box>
           </Box>
         );
@@ -138,37 +231,53 @@ export default function ClientePersonal() {
                     <Box sx={{ display: 'flex', flexDirection: 'column', marginTop:1}}>
                         <Typography variant="subtitle1" color="#5c5653">Datos de tu perrito</Typography>
                         <Box sx={{ display: 'flex', gap: 2 }}>
-                            <TextField fullWidth label="Nombre" margin="normal" sx={{ width: '50%' }} />
                             <TextField
-                            fullWidth
-                            label="Peso"
-                            margin="normal"
-                            sx={{ width: '50%' }}
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end">kg</InputAdornment>
-                            }}
+                              fullWidth
+                              label="Nombre"
+                              value={nombreMascota}
+                              onChange={(e) => setNombreMascota(e.target.value)}
+                              margin="normal"
+                              sx={{ width: '50%' }}
+                            />
+                            <TextField
+                              fullWidth
+                              label="Peso"
+                              value={pesoMascota}
+                              onChange={(e) => setPesoMascota(e.target.value)}
+                              margin="normal"
+                              sx={{ width: '50%' }}
+                              InputProps={{
+                                endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+                              }}
                             />
                         </Box>
                     </Box>
                 )}
                 {tipoMascota === 'gato' && (
-                <Box sx={{display: 'flex', gap:2}}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', marginTop:1}}>
-                        <Typography variant="subtitle1" color="#5c5653">Datos de tu gatito</Typography>
-                        <Box sx={{ display: 'flex', gap: 2 }}>
-                            <TextField fullWidth label="Nombre" margin="normal" sx={{ width: '50%' }} />
-                            <TextField
-                            fullWidth
-                            label="Peso"
-                            margin="normal"
-                            sx={{ width: '50%' }}
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end">kg</InputAdornment>
-                            }}
-                            />
-                        </Box>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', marginTop:1}}>
+                    <Typography variant="subtitle1" color="#5c5653">Datos de tu gatito</Typography>
+                    <Box sx={{ display: 'flex', gap: 2 }}>
+                      <TextField
+                        fullWidth
+                        label="Nombre"
+                        value={nombreMascota}
+                        onChange={(e) => setNombreMascota(e.target.value)}
+                        margin="normal"
+                        sx={{ width: '50%' }}
+                      />
+                      <TextField
+                        fullWidth
+                        label="Peso"
+                        value={pesoMascota}
+                        onChange={(e) => setPesoMascota(e.target.value)}
+                        margin="normal"
+                        sx={{ width: '50%' }}
+                        InputProps={{
+                          endAdornment: <InputAdornment position="end">kg</InputAdornment>
+                        }}
+                      />
                     </Box>
-                </Box>
+                  </Box>
                 )}
            </Box>
         );
@@ -386,11 +495,18 @@ export default function ClientePersonal() {
             </Button>
             <ColorButton 
               variant="contained" 
-              onClick={handleNext} 
-              sx={{borderRadius:2}}
-              disabled={activeStep === steps.length - 1 && (!acceptedTerms || !acceptedPrivacy)}
+              onClick={() => {
+                console.log('Paso actual:', activeStep); // para confirmar
+                if (activeStep >= steps.length - 1) {
+                  handleFinalizar();
+                } else {
+                  handleNext();
+                }
+              }}
+              sx={{ borderRadius: 2 }}
+              disabled={activeStep === 3 && (!acceptedTerms || !acceptedPrivacy)}
             >
-                {activeStep === steps.length ? 'Finalizar' : 'Siguiente'}
+              {activeStep >= steps.length - 1 ? 'Finalizar' : 'Siguiente'}
             </ColorButton>
               {activeStep === steps.length && (
                 <Box mt={2}>
