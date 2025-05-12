@@ -98,13 +98,13 @@ export default function PrestadorPersonal() {
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-    const handlePopOverOpen = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handlePopoverClose = () => {
-      setAnchorEl(null);
-    };
-    const open = Boolean(anchorEl);
+  const handlePopOverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
 
 
   const renderRightPanelContent = (step) => {
