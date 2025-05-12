@@ -10,119 +10,62 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 import { Account } from '@toolpad/core/Account';
-import { useSession } from '@toolpad/core/useSession';
+
+
 import { UserOrg } from './UserOrg';
-import Inicio from './Inicio'
-import InformacionServicio from './InformacionServicio';
-import Reservas from './Reservas';
-import Chats from './Chats';
-import HistorialServicio from './HistorialServicio';
-import PagosFacturacion from './PagosFacturacion';
-import ResenasOpiniones from './ReseniasOpiniones';
-import Configuracion from './Configuracion';
+import InicioCliente from './InicioCliente';
+import MisMascotas from './MisMascotas';
+import ServiciosDisponibles from './ServiciosDisponibles';
+import MisReservas from './MisReservas';
+import ChatCliente from './ChatCliente';
+import PagosCliente from './PagosCliente';
+import ReseniasCliente from './ReseniasCliente';
+import ConfiguracionCliente from './ConfiguracionCliente';
 
 
 // Icons
 import HomeIcon from '@mui/icons-material/Home';
-import InfoIcon from '@mui/icons-material/Info';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ChatIcon from '@mui/icons-material/Chat';
-import HistoryIcon from '@mui/icons-material/History';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import StarIcon from '@mui/icons-material/Star';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import PetsIcon from '@mui/icons-material/Pets';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
 
 
-// const NAVIGATION = [
-//   {
-//     kind: 'divider', // solo espacio
-//   },
-//   {
-//     segment: 'inicio',
-//     title: 'Inicio',
-//     icon: <HomeIcon />
-//   },
-//   {
-//     segment: 'informacion-servicio',
-//     title: 'Información del servicio',
-//     icon: <InfoIcon />,
-//   },
-//   {
-//     segment: 'reservas',
-//     title: 'Reservas',
-//     icon: <CalendarMonthIcon />,
-//   },
-//   {
-//     segment: 'chats',
-//     title: 'Chats',
-//     icon: <ChatIcon />,
-//   },
-//   {
-//     segment: 'historia-servicio',
-//     title: 'Historial del servicio',
-//     icon: <HistoryIcon />,
-//   },
-//   {
-//     segment: 'pagos-facturacion',
-//     title: 'Pagos y facturación',
-//     icon: <CreditCardIcon />,
-//   },
-//   {
-//     segment: 'resenas-opiniones',
-//     title: 'Reseñas y opiniones',
-//     icon: <StarIcon />,
-//   },
-//   {
-//     segment: 'configuracion',
-//     title: 'Configuracion',
-//     icon: <SettingsIcon />,
-//   },
 
-// ];
 
 const demoTheme = createTheme({
-  // cssVariables: {
-  //   colorSchemeSelector: 'data-toolpad-color-scheme',
-  // },
-  // colorSchemes: { light: true, dark: true },
-  // breakpoints: {
-  //   values: {
-  //     xs: 0,
-  //     sm: 600,
-  //     md: 600,
-  //     lg: 1200,
-  //     xl: 1536,
-  //   },
-  // },
-
   palette: {
-    mode : 'light',
+    mode: 'light',
     primary: {
-      main: '#4D724D'
+      main: '#E1832B', // naranja vibrante del sidebar
     },
     secondary: {
-      main: '#A64D79'
+      main: '#D94E1F', // tono más oscuro para resaltar
     },
     background: {
-      default: '#F9F1F0',
-      paper: '#FFFFFF'
-    }, text: {
-      primary: '#2D2D2D',
-      secondary: '#4D724D'
+      default: '#FAF3F0', // fondo general muy claro
+      paper: '#FFFFFF', // fondo de tarjetas o paneles
+    },
+    text: {
+      primary: '#2D2D2D', // texto oscuro para buena lectura
+      secondary: '#5A5A5A', // texto secundario
     },
   },
   components: {
-    MuiDrawer:{
+    MuiDrawer: {
       styleOverrides: {
-        paper:{
-          backgroundColor: '#4D724D',
-          color: '#FFFFFF'
+        paper: {
+          backgroundColor: '#E1832B', // naranja del sidebar
+          color: '#FFFFFF', // texto blanco en el drawer
         },
       },
     },
@@ -130,14 +73,14 @@ const demoTheme = createTheme({
       styleOverrides: {
         root: {
           '&.Mui-selected': {
-            backgroundColor: '#D9EAD3',
-            color: '#2D2D2D',
+            backgroundColor: '#FCEBDD', // fondo claro cuando está seleccionado
+            color: '#2D2D2D', // texto oscuro
           },
           '&.Mui-selected:hover': {
-            backgroundColor: '#cde2c6', // tono un poco más oscuro o similar al seleccionado
+            backgroundColor: '#f8dac7',
           },
           '&:hover': {
-            backgroundColor: '#6b996b', // para botones no seleccionados
+            backgroundColor: '#F5A872', // naranja claro al pasar el mouse
           },
         },
       },
@@ -146,11 +89,11 @@ const demoTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: 'transparent',
-          border: 'none',                 // fuerza quitar línea
+          border: 'none',
         },
       },
     },
-  }
+  },
 });
 
 function DemoPageContent({ pathname }) {
@@ -171,22 +114,22 @@ function DemoPageContent({ pathname }) {
 
 function RenderPage ( { pathname }){
   switch (pathname){
-    case  '/inicio':
-      return <Inicio/>
-    case '/informacion-servicio':
-      return <InformacionServicio/>
-    case '/reservas':
-      return <Reservas/>
-    case '/chats':
-      return <Chats/>
-    case '/historia-servicio':
-      return <HistorialServicio/>
-    case '/pagos-facturacion':
-      return <PagosFacturacion/>
-    case '/resenas-opiniones':
-      return <ResenasOpiniones/>
-    case '/configuracion':
-      return <Configuracion/>
+    case  '/dashboard-cliente':
+      return <InicioCliente/>
+    case '/mis-mascotas':
+      return <MisMascotas/>
+    case '/servicios-disponibles':
+      return <ServiciosDisponibles/>
+    case '/mis-reservas':
+      return <MisReservas/>
+    case '/chat-cliente':
+      return <ChatCliente/>
+    case '/pagos-cliente':
+      return <PagosCliente/>
+    case '/resenias-cliente':
+      return <ReseniasCliente/>
+    case '/configuracion-cliente':
+      return <ConfiguracionCliente/>
     default:
       return <Typography sx={{margin : '30px'}}>Ruta no encontrada: {pathname}</Typography>
   }
@@ -200,7 +143,7 @@ DemoPageContent.propTypes = {
 function CustomAppTitle() {
   return (
     <Stack direction="row" alignItems="center" spacing={{xs:0, sm:0, md:5}} sx={{ml:"3vh"}}>
-      <Avatar alt="Logo" src="/animate.png" sx={{ width:{xs:0, sm: 40, md: 56}, height: {xs:0, sm: 40, md: 56} }} />
+      <Avatar alt="Logo" src="/logo.png" sx={{ width:{xs:0, sm: 40, md: 56}, height: {xs:0, sm: 40, md: 56} }} />
       <Typography variant="h6" sx={{ textAlign: 'center' }}>
        CHAT PET
       </Typography>
@@ -246,7 +189,7 @@ function ToolbarActionsSearch() {
         />
       )}
 
-      <Badge color="success" badgeContent={1} max={999} variant="dot">
+      <Badge color="primary" badgeContent={1} max={999} variant="dot">
         <NotificationsIcon />
       </Badge>
 
@@ -268,24 +211,16 @@ function SidebarFooter({ mini }) {
 }
 
 
-function Dashboard(props) {
+function DashboardCliente(props) {
   const { window } = props;
 
-  const [session, setSession] = React.useState(() => {
-  const storedUser = JSON.parse(localStorage.getItem('usuario'));
-  return storedUser
-    ? {
-        user: {
-          name: storedUser.nombre,
-          email: storedUser.correo,
-          image:
-            storedUser.selfie && typeof storedUser.selfie === 'string'
-              ? `data:image/jpeg;base64,${storedUser.selfie}`
-              : '/powito1.jpeg',
-        },
-      }
-    : null;
-});
+  const [session, setSession] = React.useState({
+    user: {
+      name: 'Bharat Kashyap',
+      email: 'bharatkashyap@outlook.com',
+      image: 'https://avatars.githubusercontent.com/u/19550456',
+    },
+  });
 
   const authentication = React.useMemo(() => {
     return {
@@ -304,7 +239,7 @@ function Dashboard(props) {
     };
   }, []);
 
-  const router = useDemoRouter('/dashboard');
+  const router = useDemoRouter('/dashboard-cliente');
   const demoWindow = window !== undefined ? window() : undefined;
 
   return (
@@ -317,7 +252,7 @@ function Dashboard(props) {
               kind: 'divider', // solo espacio
             },
             {
-              segment: 'inicio',
+              segment: 'dashboard-cliente',
               title: 'Inicio',
               icon: <HomeIcon />
             },
@@ -325,39 +260,39 @@ function Dashboard(props) {
               kind: 'divider', // solo espacio
             },
             {
-              segment: 'informacion-servicio',
-              title: 'Información del servicio',
-              icon: <InfoIcon />,
+              segment: 'mis-mascotas',
+              title: 'Mis mascotas',
+              icon: <PetsIcon />,
             },
             {
               kind: 'divider', // solo espacio
             },
             {
-              segment: 'reservas',
-              title: 'Reservas',
+              segment: 'servicios-disponibles',
+              title: 'Servicios disponibles',
+              icon: <ShoppingCartIcon />,
+            },
+            {
+              kind: 'divider', // solo espacio
+            },
+            {
+              segment: 'mis-reservas',
+              title: 'Mis reservas',
               icon: <CalendarMonthIcon />,
             },
             {
               kind: 'divider', // solo espacio
             },
             {
-              segment: 'chats',
-              title: 'Chats',
+              segment: 'chat-cliente',
+              title: 'Chat y comunicación',
               icon: <ChatIcon />,
             },
             {
               kind: 'divider', // solo espacio
             },
             {
-              segment: 'historia-servicio',
-              title: 'Historial del servicio',
-              icon: <HistoryIcon />,
-            },
-            {
-              kind: 'divider', // solo espacio
-            },
-            {
-              segment: 'pagos-facturacion',
+              segment: 'pagos-cliente',
               title: 'Pagos y facturación',
               icon: <CreditCardIcon />,
             },
@@ -365,7 +300,7 @@ function Dashboard(props) {
               kind: 'divider', // solo espacio
             },
             {
-              segment: 'resenas-opiniones',
+              segment: 'resenias-cliente',
               title: 'Reseñas y opiniones',
               icon: <StarIcon />,
             },
@@ -373,7 +308,7 @@ function Dashboard(props) {
               kind: 'divider', // solo espacio
             },
             {
-              segment: 'configuracion',
+              segment: 'configuracion-cliente',
               title: 'Configuracion',
               icon: <SettingsIcon />,
             },
@@ -396,8 +331,8 @@ function Dashboard(props) {
   );
 }
 
-Dashboard.propTypes = {
+DashboardCliente.propTypes = {
   window: PropTypes.func,
 };
 
-export default Dashboard;
+export default DashboardCliente;

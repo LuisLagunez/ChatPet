@@ -201,12 +201,6 @@ function ChatsLasts () {
 
     return (
         <Box sx={{flexGrow: 1, margin: '5vh'}}>
-            <Typography
-            sx={{mb: 2, mt:2}}
-            variant='h4'
-            >
-                Inicio
-            </Typography>
             <Grid container spacing={4} columns={{ xs: 4, sm: 12, md: 12}}>
                 <StatCards data={stats}/>
                 <CalendarStats/>
