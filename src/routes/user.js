@@ -7,10 +7,9 @@ import multer from 'multer';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-
 const router = express.Router();
 
-// Ruta: POST /api/registro
+// Ruta: POST /api/registro (prestador de servicios)
 router.post('/registro', upload.single('selfie'), async (req, res) => {
   try {
     const {
@@ -23,11 +22,18 @@ router.post('/registro', upload.single('selfie'), async (req, res) => {
 
     const selfieBuffer = req.file?.buffer;
 
+    const existe = await Usuario.findOne({ correo });
+    if (existe) {
+      return res.status(400).json({ error: 'El correo ya está registrado como usuario' });
+    }
+
+    const hashedPassword = await bcrypt.hash(contrasena, 10);
+
     const nuevoUsuario = new Usuario({
       nombre,
       apellidos,
       correo,
-      contrasena,
+      contrasena: hashedPassword,
       direccion,
       codigoPostal,
       telefono,
@@ -99,6 +105,39 @@ router.post('/cliente', async (req, res) => {
   } catch (error) {
     console.error('Error en /cliente:', error);
     res.status(500).json({ error: error.message || 'Error al registrar el cliente' });
+  }
+});
+
+// Ruta: POST /api/login
+router.post('/login', async (req, res) => {
+  const { correo, contrasena } = req.body;
+
+  try {
+    const usuario = await Usuario.findOne({ correo });
+
+    if (!usuario) {
+      return res.status(400).json({ error: 'Usuario no encontrado' });
+    }
+
+    const match = await bcrypt.compare(contrasena, usuario.contrasena);
+
+    if (!match) {
+      return res.status(401).json({ error: 'Contraseña incorrecta' });
+    }
+
+    res.status(200).json({
+      mensaje: 'Login exitoso',
+      usuario: {
+        id: usuario._id,
+        nombre: usuario.nombre,
+        correo: usuario.correo,
+        rol: 'prestador'
+      }
+    });
+
+  } catch (error) {
+    console.error('Error en /login:', error);
+    res.status(500).json({ error: 'Error en el login' });
   }
 });
 
