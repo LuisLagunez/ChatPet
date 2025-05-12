@@ -28,14 +28,35 @@ export function HistorialServicio(){
             <Grid container spacing={{xs: 2, md: 4}} columns={{ xs: 4, sm: 12, md: 12}}>
                 <Grid size={{xs: 12,sm: 12,md:12}}>
                     <Box
-                    sx={{
-                        bgcolor: '#FFFFFF',
-                        width: '100%',
-                        height: '75vh',
-                        borderRadius: '10px',
-                        boxShadow: 2
-                    }}
-                    ></Box>
+                        sx={{
+                            bgcolor: '#FFFFFF',
+                            width: '100%',
+                            height: '75vh',
+                            borderRadius: '10px',
+                            boxShadow: 2,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            alignItems: 'start',
+                            pt:2
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                bgcolor: '#FFFFFF',
+                                width: '95%',
+                                height: '7vh',
+                                borderRadius: '10px',
+                                border: 3,
+                                borderColor: '#A4A4A4',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            Algo che
+                        </Box>
+                    </Box>
                 </Grid>
             </Grid>
         </Box>

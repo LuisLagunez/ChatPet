@@ -65,18 +65,18 @@ export function Reservas(){
                 <Grid container spacing={{xs: 2, md: 4}} columns={{ xs: 4, sm: 12, md: 12}}>
                     <Grid size={{xs: 12, sm: 12, md:12}}>
                         <Box
-                        sx={{
-                            bgcolor: '#FFFFFF',
-                            width: '100%',
-                            height: '5vh',
-                            borderRadius: '15px',
-                            border:2,
-                            borderBlockColor:'black',
-                            display: 'flex',
-                            alignItems: 'center',
-                            px:2,
-                            flexWrap: 'wrap'
-                        }}
+                            sx={{
+                                bgcolor: '#FFFFFF',
+                                width: '100%',
+                                height: '5vh',
+                                borderRadius: '15px',
+                                border:2,
+                                borderBlockColor:'black',
+                                display: 'flex',
+                                alignItems: 'center',
+                                px:2,
+                                flexWrap: 'wrap'
+                            }}
                         >
                             <Typography sx={{ fontSize: '16px', flex: 1, minWidth: '100px' }}>Cliente</Typography>
                             <Typography sx={{ fontSize: '16px', flex: 1, minWidth: '100px' }}>Mascota</Typography>
