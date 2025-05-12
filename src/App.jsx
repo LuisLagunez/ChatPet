@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom'
 import './App.css'
 import Login from './components/Login'
-import Home from './components/Home'
 import TipoRegistro from './components/TipoRegistro'
 import PrestadorPersonal from './components/InformacionPrestador'
 import ClientePersonal from './components/InformacionCliente'
-import Dashboard from './components/Dashboard'
+import Dashboard from './components/prestador/Dashboard'
+import DashboardCliente from './components/cliente/DashboardCliente'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
@@ -14,9 +14,6 @@ function App() {
   return (
     <>
       <Routes>
-        <Route
-        path="/home"
-        element={<Home/>}/>
         <Route
         path="/login"
         element={<Login/>}/>
@@ -32,6 +29,9 @@ function App() {
         <Route
         path="/dashboard"
         element={<Dashboard/>}/>
+        <Route
+        path="/dashboard-cliente"
+        element={<DashboardCliente/>}/>
       </Routes>
     </>
   )
