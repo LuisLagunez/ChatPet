@@ -14,6 +14,7 @@ const usuarioSchema = new mongoose.Schema({
   descripcion: { type: String },
   diasDisponibles: { type: [String] },
   horario: { type: String },
+  selfie: { type: Buffer },
 }, {
   timestamps: true
 });

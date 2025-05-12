@@ -61,6 +61,7 @@ export default function PrestadorPersonal() {
   const [telefono, setTelefono] = React.useState('');
   const [identificacion, setIdentificacion] = React.useState('');
   const [contrasena, setContrasena] = React.useState('');
+  const [selfie, setSelfie] = React.useState(null);
 
   // Detalles del servicio
   const [descripcion, setDescripcion] = React.useState('');
@@ -70,32 +71,39 @@ export default function PrestadorPersonal() {
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
   const handleFinalizar = async () => {
-    // Depuración
-    console.log("Enviando datos al backend...");
-    const datos = {
-      nombre,
-      apellidos,
-      correo,
-      contrasena,
-      direccion,
-      codigoPostal,
-      telefono,
-      identificacion,
-      tipoServicio,
-      categoria,
-      descripcion,
-      diasDisponibles: selected,
-      horario,
-    };
+  console.log("Enviando datos al backend...");
 
-    try {
-      const res = await axios.post('http://localhost:5000/api/registro', datos);
-      console.log('Usuario registrado:', res.data);
-      setActiveStep((prev) => prev + 1); // ir al paso final
-    } catch (error) {
-      console.error('Error al registrar:', error);
-    }
-  };
+  const formData = new FormData();
+  formData.append('nombre', nombre);
+  formData.append('apellidos', apellidos);
+  formData.append('correo', correo);
+  formData.append('contrasena', contrasena);
+  formData.append('direccion', direccion);
+  formData.append('codigoPostal', codigoPostal);
+  formData.append('telefono', telefono);
+  formData.append('identificacion', identificacion);
+  formData.append('tipoServicio', tipoServicio);
+  formData.append('categoria', categoria);
+  formData.append('descripcion', descripcion);
+  formData.append('horario', horario);
+  if (selfie) formData.append('selfie', selfie);
+
+  selected.forEach((dia, i) => {
+    formData.append(`diasDisponibles[${i}]`, dia);
+  });
+
+  try {
+    const res = await axios.post('http://localhost:5000/api/registro', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    console.log('Usuario registrado:', res.data);
+    setActiveStep((prev) => prev + 1);
+  } catch (error) {
+    console.error('Error al registrar:', error);
+  }
+};
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handlePopOverOpen = (event) => {
@@ -176,14 +184,19 @@ export default function PrestadorPersonal() {
               >
                 <Typography sx={{ color: 'black' }}>Introduzca su clave de lector.</Typography>
               </Popover>
-                <Button
-                  variant='outlined'
-                  startIcon={<PhotoCamera />}
+                <Button 
+                  variant='outlined' 
+                  startIcon={<PhotoCamera/>} 
                   component="label"
                   sx={{ width: '50%', alignSelf: 'center', height: '56px', marginTop: 1 }}
                 >
                   Selfie
-                  <input hidden accept="imagen/*" type="file" onChange={() => { }} />
+                  <input
+                    hidden
+                    accept="image/*"
+                    type="file"
+                    onChange={(e) => setSelfie(e.target.files[0])}
+                  />
                 </Button>
               </Box>
 
