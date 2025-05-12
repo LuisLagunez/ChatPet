@@ -45,7 +45,6 @@ export default function Login() {
         correo,
         contrasena
       });
-
       localStorage.setItem('usuario', JSON.stringify(res.data.usuario));
       navigate('/dashboard');
     } catch (error) {

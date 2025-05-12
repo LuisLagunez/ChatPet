@@ -131,7 +131,12 @@ router.post('/login', async (req, res) => {
         id: usuario._id,
         nombre: usuario.nombre,
         correo: usuario.correo,
-        rol: 'prestador'
+        rol: 'prestador',
+        selfie: usuario.selfie
+        ? Buffer.isBuffer(usuario.selfie)
+          ? usuario.selfie.toString('base64')
+          : Buffer.from(usuario.selfie.data).toString('base64')
+        : null,
       }
     });
 

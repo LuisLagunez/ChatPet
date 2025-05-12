@@ -271,13 +271,21 @@ function SidebarFooter({ mini }) {
 function Dashboard(props) {
   const { window } = props;
 
-  const [session, setSession] = React.useState({
-    user: {
-      name: 'Bharat Kashyap',
-      email: 'bharatkashyap@outlook.com',
-      image: 'https://avatars.githubusercontent.com/u/19550456',
-    },
-  });
+  const [session, setSession] = React.useState(() => {
+  const storedUser = JSON.parse(localStorage.getItem('usuario'));
+  return storedUser
+    ? {
+        user: {
+          name: storedUser.nombre,
+          email: storedUser.correo,
+          image:
+            storedUser.selfie && typeof storedUser.selfie === 'string'
+              ? `data:image/jpeg;base64,${storedUser.selfie}`
+              : '/powito1.jpeg',
+        },
+      }
+    : null;
+});
 
   const authentication = React.useMemo(() => {
     return {
