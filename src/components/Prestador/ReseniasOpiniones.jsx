@@ -109,7 +109,7 @@ const reseñas = [
   }
 ];
 
-function ResenasBody() {
+export function ResenasBody() {
   return (
     <Grid item xs={12}>
       <Typography sx={{ mb: 2 }} variant='h5'>
@@ -182,21 +182,19 @@ function ResenasBody() {
 
 export function ResenasOpiniones(){
     return (
-        <Box sx={{flexGrow: 1, margin: '5vh'}}>
-            <Grid container  columns={{ xs: 12, sm: 12, md: 12}}
-            sx={{
-                width: '100%',
-                height: '100%',
-                borderRadius: '10px',
-                p:6,
-                // alignContent: 'center',
-                // textAlign: 'center',
-                bgcolor:'#FFFFFF'
+      <Box sx={{flexGrow: 1, margin: '5vh'}}>
+        <Grid container  columns={{ xs: 12, sm: 12, md: 12}}
+          sx={{
+            width: '100%',
+            height: '100%',
+            borderRadius: '10px',
+            p:6,
+            bgcolor:'#FFFFFF'
             }}
-            >
-                <ResenasBody/>
-            </Grid>
-        </Box>
+        >
+          <ResenasBody/>
+        </Grid>
+      </Box>
     )
 }
 
