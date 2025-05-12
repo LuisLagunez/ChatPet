@@ -540,7 +540,7 @@ export default function ClientePersonal() {
           {renderRightPanelContent(activeStep)}
         </Grid>
         <Grid sx={{p:2, backgroundColor:'white', height: '60px', width:'350px'}}>
-          <Box >
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Button
               variant='outlined'
               onClick={() => {

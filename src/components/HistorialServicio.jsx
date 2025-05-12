@@ -17,18 +17,18 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function createDataHistorial(
-    cliente,
+    nombre, 
     fecha,
     hora,
     lugar,
     mascota,
     pago
 ) {
-    return {cliente, fecha, hora, lugar, mascota, pago};
+    return {nombre, fecha, hora, lugar, mascota, pago};
 }
 
 const rowsHistorial = [
-    createDataHistorial('Alberto-Dalesio', '30/04/2025', '14:00', 'A domicilio', 'Pugberto', 250),
+    createDataHistorial('Alberto', '30/04/2025', '14:00', 'A domicilio', 'Pugberto', 250),
     createDataHistorial('Lisa', '28/04/2025', '13:00', 'A domicilio', 'Love', 450)
 ]
 
@@ -98,8 +98,8 @@ export function HistorialServicio(){
                                 <Box sx={{ position: 'relative', display: 'inline-block', marginRight: 1, marginRight:'13%'}}>
                                     {/* Avatar grande */}
                                     <Avatar 
-                                        alt={rowHistorial.cliente} 
-                                        src={`/${rowHistorial.cliente}.jpg`} 
+                                        alt={rowHistorial.nombre} 
+                                        src={`/${rowHistorial.nombre}.jpg`} 
                                         sx={{ width: 70, height: 70 }} 
                                     />
 

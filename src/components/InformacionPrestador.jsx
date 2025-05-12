@@ -569,18 +569,18 @@ export default function PrestadorPersonal() {
         <Grid sx={{p:2, backgroundColor:'#eaf2e5', height: '465px', width:'375px'}}>
           {renderRightPanelContent(activeStep)}
         </Grid>
-        <Grid sx={{p:2, backgroundColor:'white', height: '60px', width:'350px'}}>
-          <Box>
+        <Grid sx={{ p: 2, backgroundColor: 'white', height: '60px', width: '350px' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Button
-              variant='outlined'
+              variant="outlined"
               onClick={() => {
-                if (activeStep === 0){
+                if (activeStep === 0) {
                   navigate('/tipo');
                 } else {
                   handleBack();
                 }
               }}
-              sx={{ mr: 17, color:'gray', borderColor:'gray', borderRadius:2 }}
+              sx={{ color: 'gray', borderColor: 'gray', borderRadius: 2 }}
             >
               Atrás
             </Button>
@@ -588,7 +588,6 @@ export default function PrestadorPersonal() {
             <ColorButton 
               variant="contained" 
               onClick={() => {
-                console.log('Paso actual:', activeStep); // para confirmar
                 if (activeStep >= steps.length - 1) {
                   handleFinalizar();
                 } else {
@@ -600,13 +599,13 @@ export default function PrestadorPersonal() {
             >
               {activeStep >= steps.length - 1 ? 'Finalizar' : 'Siguiente'}
             </ColorButton>
-
-            {activeStep === steps.length && (
-              <Box mt={2}>
-                <Typography>¡Completado!</Typography>
-              </Box>
-            )}
           </Box>
+
+          {activeStep === steps.length && (
+            <Box mt={2}>
+              <Typography>¡Completado!</Typography>
+            </Box>
+          )}
         </Grid>
       </Grid>
     </Grid>
