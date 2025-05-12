@@ -60,6 +60,7 @@ export default function PrestadorPersonal() {
   const [codigoPostal, setCodigoPostal] = React.useState('');
   const [telefono, setTelefono] = React.useState('');
   const [identificacion, setIdentificacion] = React.useState('');
+  const [contrasena, setContrasena] = React.useState('');
 
   // Detalles del servicio
   const [descripcion, setDescripcion] = React.useState('');
@@ -75,6 +76,7 @@ export default function PrestadorPersonal() {
       nombre,
       apellidos,
       correo,
+      contrasena,
       direccion,
       codigoPostal,
       telefono,
@@ -195,8 +197,9 @@ export default function PrestadorPersonal() {
                 />
                 <TextField
                   label="Contraseña"
-                  value={correo}
-                  onChange={(e) => setCorreo(e.target.value)}
+                  type="password"
+                  value={contrasena}
+                  onChange={(e) => setContrasena(e.target.value)}
                   margin="normal"
                   sx={{ width: '50%' }}
                 />

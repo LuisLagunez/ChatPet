@@ -1,6 +1,7 @@
 import express from 'express';
 import Usuario from '../models/Usuario.js';
 import Cliente from '../models/Cliente.js';
+import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ router.post('/registro', async (req, res) => {
       nombre,
       apellidos,
       correo,
+      contrasena,
       direccion,
       codigoPostal,
       telefono,
@@ -22,16 +24,18 @@ router.post('/registro', async (req, res) => {
       horario
     } = req.body;
 
-    // Verificar que el correo no esté duplicado
     const existe = await Usuario.findOne({ correo });
     if (existe) {
       return res.status(400).json({ error: 'El correo ya está registrado' });
     }
 
+    const hashedPassword = await bcrypt.hash(contrasena, 10);
+
     const nuevoUsuario = new Usuario({
       nombre,
       apellidos,
       correo,
+      contrasena: hashedPassword,
       direccion,
       codigoPostal,
       telefono,
@@ -43,12 +47,14 @@ router.post('/registro', async (req, res) => {
       horario
     });
 
+    await nuevoUsuario.validate();
     await nuevoUsuario.save();
+
     res.status(201).json({ mensaje: 'Usuario registrado exitosamente' });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error al registrar el usuario' });
+    console.error('Error en /registro:', error);
+    res.status(500).json({ error: error.message || 'Error al registrar el usuario' });
   }
 });
 
@@ -59,6 +65,7 @@ router.post('/cliente', async (req, res) => {
       nombre,
       apellidos,
       correo,
+      contrasena,
       direccion,
       codigoPostal,
       telefono,
@@ -75,10 +82,13 @@ router.post('/cliente', async (req, res) => {
       return res.status(400).json({ error: 'El correo ya está registrado como cliente' });
     }
 
+    const hashedPassword = await bcrypt.hash(contrasena, 10);
+
     const nuevoCliente = new Cliente({
       nombre,
       apellidos,
       correo,
+      contrasena: hashedPassword,
       direccion,
       codigoPostal,
       telefono,
@@ -90,12 +100,14 @@ router.post('/cliente', async (req, res) => {
       frecuenciaUso
     });
 
+    await nuevoCliente.validate();
     await nuevoCliente.save();
+
     res.status(201).json({ mensaje: 'Cliente registrado exitosamente' });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error al registrar el cliente' });
+    console.error('Error en /cliente:', error);
+    res.status(500).json({ error: error.message || 'Error al registrar el cliente' });
   }
 });
 

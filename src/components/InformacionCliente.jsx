@@ -40,6 +40,7 @@ export default function ClientePersonal() {
   const [nombre, setNombre] = React.useState('');
   const [apellidos, setApellidos] = React.useState('');
   const [correo, setCorreo] = React.useState('');
+  const [contrasena, setContrasena] = React.useState('');
   const [direccion, setDireccion] = React.useState('');
   const [codigoPostal, setCodigoPostal] = React.useState('');
   const [telefono, setTelefono] = React.useState('');
@@ -72,6 +73,7 @@ export default function ClientePersonal() {
       nombre,
       apellidos,
       correo,
+      contrasena,
       direccion,
       codigoPostal,
       telefono,
@@ -191,8 +193,9 @@ export default function ClientePersonal() {
               />
               <TextField
                 label="Contraseña"
-                value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
+                type="password"
+                value={contrasena}
+                onChange={(e) => setContrasena(e.target.value)}
                 margin="normal"
                 sx={{ width: '50%' }}
               />
