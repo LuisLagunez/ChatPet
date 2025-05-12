@@ -24,6 +24,7 @@ import { orange } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const steps = ['INFORMACIÓN PERSONAL', 'INFORMACIÓN DE LA MASCOTA', 'PREFERENCIAS DEL SERVICIO', 'CONFIRMAR'];
 
@@ -102,6 +103,14 @@ export default function ClientePersonal() {
     setAnchorEl(null);
   };
   const open = Boolean(anchorEl);
+
+  const [correoError, setCorreoError] = useState(false);
+  const [correoHelper, setCorreoHelper] = useState('');
+  const validarCorreo = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
 
   const renderRightPanelContent = (step) => {
     switch (step) {
@@ -187,9 +196,18 @@ export default function ClientePersonal() {
               <TextField
                 label="Correo electrónico"
                 value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
+                onChange={(e) => {
+                  const valor = e.target.value;
+                  setCorreo(e.target.value);
+                  if(!validarCorreo(valor)) {
+                    setCorreoError(true);
+                  } else {
+                    setCorreoError(false);
+                  }
+                }}
                 margin="normal"
                 sx={{ width: '50%' }}
+                error={correoError}
               />
               <TextField
                 label="Contraseña"
@@ -565,7 +583,7 @@ export default function ClientePersonal() {
                 }
               }}
               sx={{ borderRadius: 2 }}
-              disabled={activeStep === 3 && (!acceptedTerms || !acceptedPrivacy)}
+              disabled={activeStep === 3 && (!acceptedTerms || !acceptedPrivacy || correoError)}
             >
               {activeStep >= steps.length - 1 ? 'Finalizar' : 'Siguiente'}
             </ColorButton>
