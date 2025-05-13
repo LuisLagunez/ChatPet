@@ -1,55 +1,53 @@
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cors from 'cors';
 import http from 'http';
 import { Server } from 'socket.io';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import cors from 'cors';
+import mongoose from 'mongoose';
 import userRoutes from './src/routes/user.js';
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
-
-// Crear servidor HTTP y socket.io
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
-  },
-});
+const io = new Server(server);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use('/api', userRoutes);
 
-// Conexión a MongoDB
+// Conexión MongoDB
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Conectado a MongoDB Atlas'))
-  .catch((err) => console.log('Error de conexión a MongoDB Atlas:', err));
+  .then(() => console.log('✅ MongoDB conectado'))
+  .catch((err) => console.error('❌ Error MongoDB:', err));
 
-// Ruta de prueba
-app.get('/', (req, res) => {
-  res.send('¡Conexión exitosa a MongoDB Atlas!');
-});
-
-// Socket.IO
+// Socket.io
 io.on('connection', (socket) => {
-  console.log('🔌 Usuario conectado:', socket.id);
+  console.log('🟢 Usuario conectado', socket.id);
 
   socket.on('mensaje', (data) => {
-    console.log('📩 Mensaje recibido:', data);
-    io.emit('mensaje', data); // Enviar a todos los clientes conectados
+    io.emit('mensaje', data);
   });
 
   socket.on('disconnect', () => {
-    console.log('❌ Usuario desconectado:', socket.id);
+    console.log('🔴 Usuario desconectado', socket.id);
   });
 });
 
-// Iniciar servidor
-server.listen(port, () => {
-  console.log(`🚀 Servidor escuchando en el puerto ${port}`);
+// Servir archivos estáticos del frontend
+app.use(express.static(path.join(__dirname, 'dist')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+// Escuchar
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log(`🚀 Servidor escuchando en puerto ${PORT}`);
 });
