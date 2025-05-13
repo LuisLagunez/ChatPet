@@ -14,6 +14,7 @@ const clienteSchema = new mongoose.Schema({
   tipoMascota: { type: String },
   tipoServicioPreferente: { type: String },
   frecuenciaUso: { type: String },
+  selfie: { type: Buffer },
 }, {
   timestamps: true
 });

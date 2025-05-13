@@ -9,7 +9,7 @@ const upload = multer({ storage });
 
 const router = express.Router();
 
-// Ruta: POST /api/registro (prestador de servicios)
+// REGISTRO PRESTADOR DE SERVICIO
 router.post('/registro', upload.single('selfie'), async (req, res) => {
   try {
     const {
@@ -55,8 +55,8 @@ router.post('/registro', upload.single('selfie'), async (req, res) => {
   }
 });
 
-// Ruta: POST /api/cliente
-router.post('/cliente', async (req, res) => {
+// REGISTRO CLIENTE
+router.post('/cliente', upload.single('selfie'), async (req, res) => {
   try {
     const {
       nombre,
@@ -73,6 +73,8 @@ router.post('/cliente', async (req, res) => {
       tipoServicioPreferente,
       frecuenciaUso
     } = req.body;
+
+    const selfieBuffer = req.file?.buffer;
 
     const existe = await Cliente.findOne({ correo });
     if (existe) {
@@ -94,7 +96,8 @@ router.post('/cliente', async (req, res) => {
       pesoMascota,
       tipoMascota,
       tipoServicioPreferente,
-      frecuenciaUso
+      frecuenciaUso,
+      selfie: selfieBuffer
     });
 
     await nuevoCliente.validate();
@@ -108,37 +111,56 @@ router.post('/cliente', async (req, res) => {
   }
 });
 
-// Ruta: POST /api/login
+// LOGIN GENERAL
 router.post('/login', async (req, res) => {
   const { correo, contrasena } = req.body;
 
   try {
-    const usuario = await Usuario.findOne({ correo });
+    // Buscar como prestador
+    let user = await Usuario.findOne({ correo });
+    if (user) {
+      const match = await bcrypt.compare(contrasena, user.contrasena);
+      if (!match) return res.status(401).json({ error: 'Contraseña incorrecta' });
 
-    if (!usuario) {
-      return res.status(400).json({ error: 'Usuario no encontrado' });
+      return res.status(200).json({
+        mensaje: 'Login exitoso',
+        usuario: {
+          id: user._id,
+          nombre: user.nombre,
+          correo: user.correo,
+          rol: 'prestador',
+          selfie: user.selfie
+            ? Buffer.isBuffer(user.selfie)
+              ? user.selfie.toString('base64')
+              : Buffer.from(user.selfie.data).toString('base64')
+            : null,
+        }
+      });
     }
 
-    const match = await bcrypt.compare(contrasena, usuario.contrasena);
+    // Buscar como cliente
+    user = await Cliente.findOne({ correo });
+    if (user) {
+      const match = await bcrypt.compare(contrasena, user.contrasena);
+      if (!match) return res.status(401).json({ error: 'Contraseña incorrecta' });
 
-    if (!match) {
-      return res.status(401).json({ error: 'Contraseña incorrecta' });
+      return res.status(200).json({
+        mensaje: 'Login exitoso',
+        usuario: {
+          id: user._id,
+          nombre: user.nombre,
+          correo: user.correo,
+          rol: 'cliente',
+          selfie: user.selfie
+            ? Buffer.isBuffer(user.selfie)
+              ? user.selfie.toString('base64')
+              : Buffer.from(user.selfie.data).toString('base64')
+            : null,
+        }
+      });
     }
 
-    res.status(200).json({
-      mensaje: 'Login exitoso',
-      usuario: {
-        id: usuario._id,
-        nombre: usuario.nombre,
-        correo: usuario.correo,
-        rol: 'prestador',
-        selfie: usuario.selfie
-        ? Buffer.isBuffer(usuario.selfie)
-          ? usuario.selfie.toString('base64')
-          : Buffer.from(usuario.selfie.data).toString('base64')
-        : null,
-      }
-    });
+    return res.status(400).json({ error: 'Usuario no encontrado' });
 
   } catch (error) {
     console.error('Error en /login:', error);

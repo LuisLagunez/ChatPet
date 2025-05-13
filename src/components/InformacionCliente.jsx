@@ -46,6 +46,7 @@ export default function ClientePersonal() {
   const [codigoPostal, setCodigoPostal] = React.useState('');
   const [telefono, setTelefono] = React.useState('');
   const [identificacion, setIdentificacion] = React.useState('');
+  const [selfie, setSelfie] = useState(null);
 
   const [nombreMascota, setNombreMascota] = React.useState('');
   const [pesoMascota, setPesoMascota] = React.useState('');
@@ -66,34 +67,52 @@ export default function ClientePersonal() {
   const [acceptedPrivacy, setAcceptedPrivacy] = React.useState(false);
   const handleNext = () => setActiveStep((prev) => prev + 1);
   const handleBack = () => setActiveStep((prev) => prev - 1);
+  const [registroConfirmado, setRegistroConfirmado] = useState(false);
 
-  const handleFinalizar = async () => {
-    // Depuración
-    console.log("Enviando datos al backend...");
-    const datosCliente = {
-      nombre,
-      apellidos,
-      correo,
-      contrasena,
-      direccion,
-      codigoPostal,
-      telefono,
-      identificacion,
-      nombreMascota,
-      pesoMascota,
-      tipoMascota,
-      tipoServicioPreferente,
-      frecuenciaUso,
-    };
+const handleFinalizar = async () => {
+  if (!registroConfirmado) {
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('apellidos', apellidos);
+    formData.append('correo', correo);
+    formData.append('contrasena', contrasena);
+    formData.append('direccion', direccion);
+    formData.append('codigoPostal', codigoPostal);
+    formData.append('telefono', telefono);
+    formData.append('identificacion', identificacion);
+    formData.append('nombreMascota', nombreMascota);
+    formData.append('pesoMascota', pesoMascota);
+    formData.append('tipoMascota', tipoMascota);
+    formData.append('tipoServicioPreferente', tipoServicioPreferente);
+    formData.append('frecuenciaUso', frecuenciaUso);
+    if (selfie) {
+      formData.append('selfie', selfie);
+    }
 
     try {
-        const res = await axios.post('http://localhost:5000/api/cliente', datosCliente);
-        console.log('Cliente registrado:', res.data);
-        setActiveStep((prev) => prev + 1);
+      const res = await axios.post('http://localhost:5000/api/cliente', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      console.log('Cliente registrado:', res.data);
+      setActiveStep((prev) => prev + 1);
+      setRegistroConfirmado(true);
     } catch (error) {
-        console.error('Error al registrar cliente:', error);
+      console.error('Error al registrar cliente:', error);
     }
-  };
+  } else {
+    // login automático
+    try {
+      const loginRes = await axios.post('http://localhost:5000/api/login', {
+        correo,
+        contrasena,
+      });
+      localStorage.setItem('usuario', JSON.stringify(loginRes.data.usuario));
+      navigate('/dashboard-cliente');
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+    }
+  }
+};
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handlePopOverOpen = (event) => {
@@ -110,7 +129,6 @@ export default function ClientePersonal() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
-
 
   const renderRightPanelContent = (step) => {
     switch (step) {
@@ -188,7 +206,12 @@ export default function ClientePersonal() {
                 sx={{width:'50%', alignSelf:'center', height:'56px', marginTop:1}}
               >
                 Selfie
-                <input hidden accept="imagen/*" type="file" onChange={() => {}}/>
+                <input 
+                  hidden 
+                  accept="image/*" 
+                  type="file" 
+                  onChange={(e) => setSelfie(e.target.files[0])}
+                />
               </Button>
             </Box>
 

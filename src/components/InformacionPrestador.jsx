@@ -70,39 +70,55 @@ export default function PrestadorPersonal() {
 
   const handleNext = () => setActiveStep((prev) => prev + 1);
   const handleBack = () => setActiveStep((prev) => prev - 1);
+  const [registroConfirmado, setRegistroConfirmado] = useState(false);
 
-  const handleFinalizar = async () => {
-  console.log("Enviando datos al backend...");
-
-  const formData = new FormData();
-  formData.append('nombre', nombre);
-  formData.append('apellidos', apellidos);
-  formData.append('correo', correo);
-  formData.append('contrasena', contrasena);
-  formData.append('direccion', direccion);
-  formData.append('codigoPostal', codigoPostal);
-  formData.append('telefono', telefono);
-  formData.append('identificacion', identificacion);
-  formData.append('tipoServicio', tipoServicio);
-  formData.append('categoria', categoria);
-  formData.append('descripcion', descripcion);
-  formData.append('horario', horario);
-  if (selfie) formData.append('selfie', selfie);
-
-  selected.forEach((dia, i) => {
-    formData.append(`diasDisponibles[${i}]`, dia);
-  });
-
-  try {
-    const res = await axios.post('http://localhost:5000/api/registro', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+const handleFinalizar = async () => {
+  if (!registroConfirmado) {
+    // Primera vez: enviar registro y mostrar pantalla de confirmación
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('apellidos', apellidos);
+    formData.append('correo', correo);
+    formData.append('contrasena', contrasena);
+    formData.append('direccion', direccion);
+    formData.append('codigoPostal', codigoPostal);
+    formData.append('telefono', telefono);
+    formData.append('identificacion', identificacion);
+    formData.append('tipoServicio', tipoServicio);
+    formData.append('categoria', categoria);
+    formData.append('descripcion', descripcion);
+    formData.append('horario', horario);
+    if (selfie) formData.append('selfie', selfie);
+    selected.forEach((dia, i) => {
+      formData.append(`diasDisponibles[${i}]`, dia);
     });
-    console.log('Usuario registrado:', res.data);
-    setActiveStep((prev) => prev + 1);
-  } catch (error) {
-    console.error('Error al registrar:', error);
+
+    try {
+      await axios.post('http://localhost:5000/api/registro', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setActiveStep((prev) => prev + 1);  // Muestra mensaje final
+      setRegistroConfirmado(true);        // Marca que ya está confirmado
+
+    } catch (error) {
+      console.error('Error al registrar:', error);
+    }
+  } else {
+    // Segunda vez: iniciar sesión y redirigir
+    try {
+      const loginRes = await axios.post('http://localhost:5000/api/login', {
+        correo,
+        contrasena,
+      });
+
+      localStorage.setItem('usuario', JSON.stringify(loginRes.data.usuario));
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+    }
   }
 };
 

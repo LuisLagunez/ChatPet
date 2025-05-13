@@ -6,7 +6,8 @@ import { createTheme } from '@mui/material/styles';
 import { Avatar, Badge, Button, Divider, IconButton, Stack, TextField, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 import { Account } from '@toolpad/core/Account';
@@ -37,7 +38,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
-
 
 // const NAVIGATION = [
 //   {
@@ -271,30 +271,37 @@ function SidebarFooter({ mini }) {
 function Dashboard(props) {
   const { window } = props;
 
-  const [session, setSession] = React.useState({
-    user: {
-      name: 'Bharat Kashyap',
-      email: 'bharatkashyap@outlook.com',
-      image: 'https://avatars.githubusercontent.com/u/19550456',
-    },
-  });
+  const navigate = useNavigate();
+
+  const [session, setSession] = React.useState(null);
+
+  React.useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('usuario'));
+    if (storedUser) {
+      setSession({
+        user: {
+          name: storedUser.nombre,
+          email: storedUser.correo,
+          image: storedUser.selfie
+            ? `data:image/jpeg;base64,${storedUser.selfie}`
+            : '/powito1.jpeg',
+        },
+      });
+    }
+  }, []);
+
 
   const authentication = React.useMemo(() => {
     return {
-      signIn: () => {
-        setSession({
-          user: {
-            name: 'Bharat Kashyap',
-            email: 'bharatkashyap@outlook.com',
-            image: 'https://avatars.githubusercontent.com/u/19550456',
-          },
-        });
-      },
+      signIn: () => {},
       signOut: () => {
+        localStorage.removeItem('usuario');
         setSession(null);
+        navigate('/login');
       },
     };
-  }, []);
+  }, [navigate]);
+
 
   const router = useDemoRouter('/dashboard');
   const demoWindow = window !== undefined ? window() : undefined;

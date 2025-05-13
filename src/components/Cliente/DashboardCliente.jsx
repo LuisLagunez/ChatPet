@@ -6,7 +6,7 @@ import { createTheme } from '@mui/material/styles';
 import { Avatar, Badge, Button, Divider, IconButton, Stack, TextField, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
+import { useNavigate } from 'react-router-dom';
 
 
 import { Account } from '@toolpad/core/Account';
@@ -214,30 +214,36 @@ function SidebarFooter({ mini }) {
 function DashboardCliente(props) {
   const { window } = props;
 
-  const [session, setSession] = React.useState({
-    user: {
-      name: 'Bharat Kashyap',
-      email: 'bharatkashyap@outlook.com',
-      image: 'https://avatars.githubusercontent.com/u/19550456',
-    },
-  });
-
-  const authentication = React.useMemo(() => {
-    return {
-      signIn: () => {
+  const navigate = useNavigate();
+  
+    const [session, setSession] = React.useState(null);
+  
+    React.useEffect(() => {
+      const storedUser = JSON.parse(localStorage.getItem('usuario'));
+      if (storedUser) {
         setSession({
           user: {
-            name: 'Bharat Kashyap',
-            email: 'bharatkashyap@outlook.com',
-            image: 'https://avatars.githubusercontent.com/u/19550456',
+            name: storedUser.nombre,
+            email: storedUser.correo,
+            image: storedUser.selfie
+              ? `data:image/jpeg;base64,${storedUser.selfie}`
+              : '/powito1.jpeg',
           },
         });
-      },
-      signOut: () => {
-        setSession(null);
-      },
-    };
-  }, []);
+      }
+    }, []);
+  
+  
+    const authentication = React.useMemo(() => {
+      return {
+        signIn: () => {},
+        signOut: () => {
+          localStorage.removeItem('usuario');
+          setSession(null);
+          navigate('/login');
+        },
+      };
+    }, [navigate]);
 
   const router = useDemoRouter('/dashboard-cliente');
   const demoWindow = window !== undefined ? window() : undefined;
