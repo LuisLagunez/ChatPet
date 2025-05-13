@@ -25,8 +25,8 @@ const rowsInformacion = [
 export function ResenasBody() {
   return (
     <Grid item xs={12}>
-      <Typography sx={{ mb: 2 }} variant='h5'>
-        RESEÑAS
+      <Typography sx={{ mb: 2, fontWeight: 'bold' }} variant='h5'>
+        Reseñas
       </Typography>
       <hr />
 
