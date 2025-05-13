@@ -5,6 +5,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Avatar, Button, List, ListItem, ListItemText, TextField, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { io } from 'socket.io-client';
 
 
 function ChatRecently (){
@@ -85,55 +86,85 @@ const chats = [
 
 
 function ChatBody() {
+  const [mensaje, setMensaje] = React.useState('');
+  const [mensajes, setMensajes] = React.useState([]);
+  const socket = React.useRef(null);
+
+  React.useEffect(() => {
+    // Conexión con el backend
+    socket.current = io('http://localhost:5000');
+
+    // Escuchar mensajes entrantes
+    socket.current.on('mensaje', (data) => {
+      setMensajes((prev) => [...prev, data]);
+    });
+
+    // Desconectar al salir
+    return () => {
+      socket.current.disconnect();
+    };
+  }, []);
+
+  const enviarMensaje = () => {
+    if (mensaje.trim()) {
+      const nuevoMensaje = {
+        autor: 'Cliente',
+        texto: mensaje,
+        hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      socket.current.emit('mensaje', nuevoMensaje);
+      setMensaje('');
+    }
+  };
+
   return (
     <Grid
       container
-      size={{md:9}}
       direction="column"
       justifyContent="space-between"
       sx={{
         background: 'rgb(241, 185, 111)',
         border: '1px solid black',
         borderRadius: '10px',
-        height: '100%', 
+        height: '100%',
         p: 2,
       }}
     >
-      {/* Aquí irían los mensajes del chat */}
-      <Box sx={{ flexGrow: 1, overflowY: 'auto' , background:'#FFFFFF'}}>
-        {/* Mensajes simulados o lista de mensajes */}
+      {/* Mostrar mensajes */}
+      <Box sx={{ flexGrow: 1, overflowY: 'auto', background: '#FFFFFF', mb: 2, p: 1 }}>
+        {mensajes.map((msg, index) => (
+          <Box key={index} sx={{ mb: 1 }}>
+            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{msg.autor}</Typography>
+            <Typography variant="body1">{msg.texto}</Typography>
+            <Typography variant="caption" sx={{ color: 'gray' }}>{msg.hora}</Typography>
+          </Box>
+        ))}
       </Box>
 
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 2,
-          mt: 2,
-        }}
-      >
+      {/* Enviar mensaje */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <TextField
           fullWidth
           variant="outlined"
-          size='small'
+          size="small"
           placeholder="Escribe un mensaje..."
-          sx={{
-            backgroundColor: '#FFFFFF'
-          }}
+          value={mensaje}
+          onChange={(e) => setMensaje(e.target.value)}
+          sx={{ backgroundColor: '#FFFFFF' }}
         />
         <Button
-        variant="contained"
-        sx={{
-            backgroundColor: '#E1832B', // naranja
-            color: '#fff',              // texto blanco
+          variant="contained"
+          onClick={enviarMensaje}
+          sx={{
+            backgroundColor: '#E1832B',
+            color: '#fff',
             '&:hover': {
-            backgroundColor: '#CF6E1E', // naranja oscuro al pasar el mouse
+              backgroundColor: '#CF6E1E',
             },
-        }}
+          }}
         >
-        Enviar
+          Enviar
         </Button>
-
       </Box>
     </Grid>
   );
